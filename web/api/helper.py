@@ -95,130 +95,130 @@ def processAnnualTopNData(dbdata, metriclist):
         data['annualdata'][d]['userdata'].append(userdata)
     return data
 
-def monthList(team, mlist):
-    dbdata=listarchives.monthData(mlist)
+def monthList(team, mlist, startdate, enddate):
+    dbdata=listarchives.monthData(mlist, startdate, enddate)
     data = processMonthData(dbdata, ['liststat'])
     data['mailing-list'] = mlist
     return data
 
-def monthCommits(team, repo):
-    dbdata=commitstat.monthData(repo)
+def monthCommits(team, repo,  startdate, enddate):
+    dbdata=commitstat.monthData(repo, startdate, enddate)
     data=processMonthData(dbdata, ['commits'])
     data['repository'] = repo
     return data
 
-def monthCommitLines(team, repo):
-    dbdata=commitlines.monthData(repo)
+def monthCommitLines(team, repo, startdate, enddate):
+    dbdata=commitlines.monthData(repo, startdate, enddate)
     data=processMonthData( dbdata, ['lines_added', 'lines_removed'])
     data['repository'] = repo
     return data
 
-def monthTopNList(team, mlist, n):
-    dbdata=listarchives.monthTopN(mlist, n)
+def monthTopNList(team, mlist, n, startdate, enddate):
+    dbdata=listarchives.monthTopN(mlist, n, startdate, enddate)
     data = processMonthTopNData(dbdata, ['liststat'])
     data['mailing-list'] = mlist
     return data
 
-def monthTopNCommits(team, repo, n):
-    dbdata=commitstat.monthTopN(repo, n)
+def monthTopNCommits(team, repo, n, startdate, enddate):
+    dbdata=commitstat.monthTopN(repo, n, startdate, enddate)
     data=processMonthTopNData(dbdata, ['commits'])
     data['repository'] = repo
     return data
 
-def monthTopNCommitLines(team, repo, n):
+def monthTopNCommitLines(team, repo, n, startdate, enddate):
     dbdata=commitlines.monthTopN(repo, n)
     data=processMonthTopNData(dbdata, ['lines_added', 'lines_removed'])
     data['repository'] = repo
     return data
 
-def annualList(team, mlist):
-    dbdata=listarchives.annualData(mlist)
+def annualList(team, mlist, startdate, enddate):
+    dbdata=listarchives.annualData(mlist, startdate, enddate)
     data = processAnnualData(dbdata, ['liststat'])
     data['mailing-list'] = mlist
     return data
 
-def annualCommits(team, repo):
-    dbdata=commitstat.annualData(repo)
+def annualCommits(team, repo, startdate, enddate):
+    dbdata=commitstat.annualData(repo, startdate, enddate)
     data=processAnnualData(dbdata, ['commits'])
     data['repository'] = repo
     return data
 
-def annualCommitLines(team, repo):
-    dbdata=commitlines.annualData(repo)
+def annualCommitLines(team, repo, startdate, enddate):
+    dbdata=commitlines.annualData(repo, startdate, enddate)
     data=processAnnualData( dbdata, ['lines_added', 'lines_removed'])
     data['repository'] = repo
     return data
 
-def annualTopNList(team, mlist, n):
-    dbdata=listarchives.annualTopN(mlist, n)
+def annualTopNList(team, mlist, n, startdate, enddate):
+    dbdata=listarchives.annualTopN(mlist, n, startdate, enddate)
     data = processAnnualTopNData(dbdata, ['liststat'])
     data['mailing-list'] = mlist
     return data
 
-def annualTopNCommits(team, repo, n):
-    dbdata=commitstat.annualTopN(repo, n)
+def annualTopNCommits(team, repo, n, startdate, enddate):
+    dbdata=commitstat.annualTopN(repo, n, startdate, enddate)
     data=processAnnualTopNData(dbdata, ['commits'])
     data['repository'] = repo
     return data
 
-def annualTopNCommitLines(team, repo, n):
-    dbdata=commitlines.annualTopN(repo, n)
+def annualTopNCommitLines(team, repo, n, startdate, enddate):
+    dbdata=commitlines.annualTopN(repo, n, startdate, enddate)
     data=processAnnualTopNData(dbdata, ['lines_added', 'lines_removed'])
     data['repository'] = repo
     return data
 
-def getMonthData(team, metric):
+def getMonthData(team, metric, startdate=None, enddate=None):
     """
     Returns JSON ready monthly data for a given team and metric.
     """
     metricname = metrics.identify(team, metric)
     data = {'metric' : metric}
     if metric == 'list':
-        data['data'] = [monthList(team,m) for m in metricname]
+        data['data'] = [monthList(team,m, startdate, enddate) for m in metricname]
     elif metric == 'commits':
-        data['data'] = [monthCommits(team,m) for m in metricname]
+        data['data'] = [monthCommits(team,m, startdate, enddate) for m in metricname]
     elif metric == 'commitlines':
-        data['data'] = [monthCommitLines(team,m) for m in metricname]
+        data['data'] = [monthCommitLines(team,m, startdate, enddate) for m in metricname]
     return data
 
-def getMonthTopNData(team, metric, n):
+def getMonthTopNData(team, metric, n,  startdate=None, enddate=None):
     """
     Returns JSON ready monthly top N data for a given team and metric.
     """
     metricname = metrics.identify(team, metric)
     data = {'metric' : metric}
     if metric == 'list':
-        data['data'] = [monthTopNList(team,m,n) for m in metricname]
+        data['data'] = [monthTopNList(team,m,n, startdate, enddate) for m in metricname]
     elif metric == 'commits':
-        data['data'] = [monthTopNCommits(team,m,n) for m in metricname]
+        data['data'] = [monthTopNCommits(team,m,n, startdate, enddate) for m in metricname]
     elif metric == 'commitlines':
         data['data'] = [monthTopNCommitLines(team,m,n) for m in metricname]
     return data
 
-def getAnnualData(team, metric):
+def getAnnualData(team, metric,  startdate=None, enddate=None):
     """
     Returns JSON ready monthly data for a given team and metric.
     """
     metricname = metrics.identify(team, metric)
     data = {'metric' : metric}
     if metric == 'list':
-        data['data'] = [annualList(team,m) for m in metricname]
+        data['data'] = [annualList(team,m, startdate, enddate) for m in metricname]
     elif metric == 'commits':
-        data['data'] = [annualCommits(team,m) for m in metricname]
+        data['data'] = [annualCommits(team,m, startdate, enddate) for m in metricname]
     elif metric == 'commitlines':
-        data['data'] = [annualCommitLines(team,m) for m in metricname]
+        data['data'] = [annualCommitLines(team,m, startdate, enddate) for m in metricname]
     return data
 
-def getAnnualTopNData(team, metric, n):
+def getAnnualTopNData(team, metric, n,  startdate=None, enddate=None):
     """
     Returns JSON ready monthly top N data for a given team and metric.
     """
     metricname = metrics.identify(team, metric)
     data = {'metric' : metric}
     if metric == 'list':
-        data['data'] = [annualTopNList(team,m,n) for m in metricname]
+        data['data'] = [annualTopNList(team,m,n, startdate, enddate) for m in metricname]
     elif metric == 'commits':
-        data['data'] = [annualTopNCommits(team,m,n) for m in metricname]
+        data['data'] = [annualTopNCommits(team,m,n, startdate, enddate) for m in metricname]
     elif metric == 'commitlines':
-        data['data'] = [annualTopNCommitLines(team,m,n) for m in metricname]
+        data['data'] = [annualTopNCommitLines(team,m,n, startdate, enddate) for m in metricname]
     return data
