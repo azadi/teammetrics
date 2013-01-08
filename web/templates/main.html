@@ -35,8 +35,8 @@
 						<tr><th>#</th><th>Person</th><th>Stats</th></tr>
 					</thead>
 					<tbody>
-						{% for name in namelist %}
-							<tr><td>{{ loop.index }}</td><td>{{name[0]}}</td><td>{{name[1]}}</td></tr>
+						{% for name, count in namelist %}
+							<tr><td>{{ loop.index }}</td><td>{{name.decode('utf-8')}}</td><td>{{count}}</td></tr>
 						{% endfor %}
 					</tbody>
 				</table>
