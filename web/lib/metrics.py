@@ -57,11 +57,11 @@ def check_metric_exist(team,metric):
         elif metric == 'commits' or metric == 'commitlines':
             metricname = 'repository'
         elif metric == 'uploads':
-            metricname = 'uploads'
+            metricname = 'bugupload'
         elif metric == 'uploadsname':
             metricname = 'uploadsname'
         elif metric == 'bugs':
-            metricname = 'bugs'
+            metricname = 'bugupload'
         elif metric == 'bugsname':
             metricname = 'bugsname'
         else:
@@ -81,13 +81,13 @@ def identify(team, metric):
     elif metric == 'commitlines':
         return get(team,'repository')
     elif metric == 'uploads':
-        return get(team,'uploads')
+        return get(team,'bugupload_key')
     elif metric == 'uploadsname':
-        return get(team,'uploadsname')
+        return get(team,'bugupload')
     elif metric == 'bugs':
-        return get(team,'bugs')
+        return get(team,'bugupload_key')
     elif metric == 'bugsname':
-        return get(team,'bugsname')
+        return get(team,'bugupload')
     else:
         logger.info('Incorrect Metric Identifier')
         return []
