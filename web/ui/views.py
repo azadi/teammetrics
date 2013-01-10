@@ -28,10 +28,8 @@ def teamdata(team, metric):
     namelist = helper.getTopNNames(teamname[0], metric)
     if metric == 'uploads':
         teamname = metrics.identify(team,'uploadsname')
-        print metrics.identify(team,'uploadsname')
     elif metric == 'bugs':
         teamname = metrics.identify(team,'bugsname')
-        print metrics.identify(team,'bugssname')
     return render_template('main.html',
                             teamname=teamname[0],
                             namelist=namelist,
