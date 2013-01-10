@@ -116,4 +116,4 @@ def get_all_teams():
         logger.error("PATH : "+CONF_FILE)
         return []
     else:
-        return cp.sections()
+        return sorted(cp.sections())
