@@ -106,7 +106,6 @@ def fetch_logs(ssh, conn, cur, teams, users):
                 for a, b in zip(author_raw[::2], author_raw[1::2]):
                     author_info.append(a+','+b)
 
-
                 for change in author_info:
                     # If the revision has already been parsed.
                     if team in all_revisions:
@@ -118,7 +117,7 @@ def fetch_logs(ssh, conn, cur, teams, users):
                     except ValueError as detail:
                         logging.error(detail)
                         continue
-
+                    
                     # There are some invalid dates, just skip those commits.
                     try:
                         date = date_raw.split()[0]
@@ -126,8 +125,14 @@ def fetch_logs(ssh, conn, cur, teams, users):
                         logging.warning('Invalid date: %s' % date)
                         logging.error(detail)
                         continue
-                    added = added.strip().split()[0]
-                    deleted = deleted.strip().split()[0]
+
+                    # For upstream authors, ignore the number of lines added or deleted.
+                    if no_debian:
+                        added = 0
+                        deleted = 0
+                    else:
+                        added = added.strip().split()[0]
+                        deleted = deleted.strip().split()[0]
 
                     if each_dir.endswith('.git'):
                         each_dir = each_dir[:-4]
