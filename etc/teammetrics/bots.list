@@ -6,6 +6,8 @@ DDPOMail robot
 Debian Archive Maintenance
 Debian BTS
 Debian External Health System
+DebianGis CVS Commit
+Debian-GIS CVS
 Debian testing watch
 Debian Bug Tracking System
 Debian FTP Masters
@@ -22,6 +24,7 @@ wnpp@debian.org
 Debian Project Secretary
 bugzilla%
 NM Front Desk
+noreply@alioth.debian.org
 Mini-Dinstall
 samba-bugs at samba.org
 X Strike Force SVN Admin
