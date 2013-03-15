@@ -12,6 +12,7 @@ teams = {
           'debian-science':    'debian-science-maintainers@lists.alioth.debian.org',
           'debichem':          'debichem-devel@lists.alioth.debian.org'            ,
           'debian-gis':        'pkg-grass-devel@lists.alioth.debian.org'           ,
+          'pkg-osm':           'pkg-osm-maint@lists.alioth.debian.org'             ,
           'pkg-multimedia':    'pkg-multimedia-maintainers@lists.alioth.debian.org',
           'pkg-java':          'pkg-java-maintainers@lists.alioth.debian.org'      ,
           'debian-live':       'debian-live@lists.debian.org'                      , # that's no real team but one very active person
