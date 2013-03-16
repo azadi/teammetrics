@@ -226,7 +226,7 @@ def main(conn, cur):
                     # Some names have the form: LastName, FirstName. 
                     if ',' in name:
                         name = ' '.join(e for e in reversed(name.split())).replace(',', '').strip()
-                    name = HTMLParser.HTMLParser().unescape(name).strip()
+                    name = HTMLParser.HTMLParser().unescape(name).strip().strip("'");
 
                     # Subject field.
                     subject = fields.get('Subject', '')
