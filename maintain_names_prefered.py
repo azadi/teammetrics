@@ -102,6 +102,7 @@ WHITELIST = (
              'Paolo Didonè',
              'Philip Blundell',
              'Picca Frédéric-Emmanuel',
+             'Øystein Gisnås',
              'Radovan Garabík',
              'Ramakrishnan Muthukrishnan',
              'Raphaël Pinson',
