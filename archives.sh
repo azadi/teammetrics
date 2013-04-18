@@ -1,6 +1,9 @@
-#! /bin/sh
+#! /bin/sh -e
 
 DB=teammetrics
+
+createuser --superuser tille
+createuser --createdb --createrole sukhbir
 
 createdb $DB
 
@@ -152,6 +155,17 @@ GRANT SELECT ON listarchives To guest ;
 GRANT EXECUTE ON FUNCTION commit_names_of_project(text,integer) TO guest ;
 GRANT SELECT ON commitstat To guest ;
 GRANT EXECUTE ON FUNCTION commitlines_names_of_project(text,integer,integer) TO guest ;
+
+GRANT ALL ON FUNCTION author_names_of_list(text,integer) TO sukhbir ;
+GRANT ALL ON FUNCTION author_names_of_list(text,integer) TO tille ;
+GRANT ALL ON listarchives TO sukhbir ;
+GRANT ALL ON listarchives TO tille ;
+GRANT ALL ON FUNCTION commit_names_of_project(text,integer) TO sukhbir ;
+GRANT ALL ON FUNCTION commit_names_of_project(text,integer) TO tille ;
+GRANT ALL ON commitstat TO sukhbir ;
+GRANT ALL ON commitstat TO tille ;
+GRANT ALL ON FUNCTION commitlines_names_of_project(text,integer,integer) TO sukhbir ;
+GRANT ALL ON FUNCTION commitlines_names_of_project(text,integer,integer) TO tille ;
 
 COMMIT;
 EOF
