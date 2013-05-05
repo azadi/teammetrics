@@ -20,6 +20,7 @@ import collections
 import psycopg2
 
 ALIOTH_PATH = '/srv/home/groups/teammetrics'
+LOCAL_PATH = os.path.join('/var/cache/teammetrics/', 'revisions.hash')
 
 
 def fetch_logs(ssh, conn, cur, teams):
@@ -30,6 +31,8 @@ def fetch_logs(ssh, conn, cur, teams):
     ftp.chdir(ALIOTH_PATH)
 
     logging.info("Fetching info from 'vasks.debian.org'...")
+    ftp.put(LOCAL_PATH, 'revisions.hash')
+
     for team in teams:
         cmd = 'python {0}/fetchrevisions.py {1}'.format(ALIOTH_PATH, team)
         stdin, stdout, stderr = ssh.exec_command(cmd)
@@ -60,4 +63,6 @@ def fetch_logs(ssh, conn, cur, teams):
                 logging.error(detail)
                 continue
 
+    ftp.get('revisions.hash', LOCAL_PATH)
+    logging.info('revision.hash synced with vasks.debian.org')
     logging.info('SVN logs saved')
