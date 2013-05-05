@@ -16,7 +16,6 @@ import psycopg2
 
 import liststat
 import spamfilter
-import updatenames
 
 BASE_URL = 'http://lists.debian.org/'
 FIELDS = ('From', 'Date', 'Subject', 'Message-id')
@@ -311,10 +310,6 @@ def main(conn, cur):
 
     if skipped_messages:
         logging.info('Skipped %s messages in the current run' % skipped_messages)
-
-    if not did_not_run:
-        logging.info('Updating names')
-        updatenames.update_names(conn, cur)
 
     logging.info('Quit')
     sys.exit()

@@ -23,8 +23,6 @@ import ConfigParser
 import psycopg2
 import paramiko
 
-import updatenames
-
 from repository import gitstat
 from repository import svnstat
 
@@ -40,6 +38,7 @@ USER_CMD = False
 USER = 'sukhbir-guest'
 
 SSH_CONFIG = os.path.join(os.path.expanduser('~'), '.ssh', 'config')
+KEY_FILE = os.path.join(os.path.expanduser('~'), 'id_rsa')
 
 DATABASE = {
             'name':        'teammetrics',
@@ -81,7 +80,8 @@ def ssh_initialize():
         user = USER
 
     try:
-        ssh.connect(SERVER, username=user, allow_agent=True)
+        key = paramiko.RSAKey.from_private_key_file(KEY_FILE)
+        ssh.connect(SERVER, username=user, pkey=key)
         logging.info('Connection to Alioth successful')
     except (paramiko.SSHException, socket.error) as detail:
         logging.error('Please check your username')
@@ -224,10 +224,6 @@ def get_stats():
         svnstat.fetch_logs(ssh, conn, cur, svn)
     else:
         logging.info('No SVN repositories found')
-
-    # Update the names.
-    logging.info('Updating names and removing bots...')
-    updatenames.update_names(conn, cur, table='commitstat')
 
     cur.close()
     conn.close()

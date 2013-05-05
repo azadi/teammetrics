@@ -37,8 +37,6 @@ import psycopg2
 import BeautifulSoup
 
 import spamfilter
-import updatenames
-
 
 PROJECT_DIR = 'teammetrics'
 
@@ -393,9 +391,6 @@ def parse_and_save(mbox_files, nntp=False):
             last_f_date = format_date
 
         current_lists.append(mbox_name)
-
-    logging.info('Updating names')
-    updatenames.update_names(conn, cur)
 
     cur.close()
     conn.close()
