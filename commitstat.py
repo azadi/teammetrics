@@ -38,7 +38,7 @@ USER_CMD = False
 USER = 'sukhbir-guest'
 
 SSH_CONFIG = os.path.join(os.path.expanduser('~'), '.ssh', 'config')
-KEY_FILE = os.path.join(os.path.expanduser('~'), 'id_rsa')
+KEY_FILE = os.path.join(os.path.expanduser('~'), '.ssh', 'id_rsa')
 
 DATABASE = {
             'name':        'teammetrics',
