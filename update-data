@@ -6,7 +6,7 @@ archiveparser.py
 #     to activate your ssh-key do:
 #   exec ssh-agent /bin/bash
 #   ssh-add ~/.ssh/<your-sec-key>
-commitstat.py -u ${USER}
+commitstat.py -u sukhbir-guest
 
 # mailing list archives (Alioth lists)
 liststat.py
