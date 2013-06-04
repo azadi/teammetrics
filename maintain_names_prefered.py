@@ -96,6 +96,7 @@ WHITELIST = (
              'Michel Dänzer',
              'Mikael Sennerholm',
              'Morten Werner Forsbring',
+             'Natural Language Processing',
              'Nicholas Flintham',
              'Nicolas François',
              'Niklas Höglund',
