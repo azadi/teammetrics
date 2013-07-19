@@ -66,6 +66,7 @@ WHITELIST = (
              'Erdal Ronahî',
              'Esteban Manchado Velázquez',
              'Eugeniy Meshcheryakov',
+             'Experimental Psychology Maintainers',
              'Fabio Massimo Di Nitto',
              'FAUmachine Team',
              'Francisco Manuel Garcia Claramonte',
