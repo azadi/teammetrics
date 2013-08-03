@@ -10,3 +10,6 @@ commitstat.py -u sukhbir-guest
 
 # mailing list archives (Alioth lists)
 liststat.py
+
+# update names
+updatenames.py
