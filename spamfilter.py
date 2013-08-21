@@ -15,6 +15,7 @@ SPAM_KEYWORDS = (
                 'Pls check this new site',
                 'promotion', 
                 'Tim.com.br',
+                'ImageJ ports on exflpcx18766',
                 )
 
 
