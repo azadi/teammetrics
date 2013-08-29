@@ -112,6 +112,7 @@ WHITELIST = (
              'Raphaël Pinson',
              'Recai Oktaş',
              'Rémi Vanicat',
+             'Salvo Tomaselli',
              'Sam Couter',
              'Santiago Ruano Rincón',
              'Scott M. Dier',
