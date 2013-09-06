@@ -1,0 +1,25 @@
+Due to some automatic test and the according bug reports several teams
+became a "new team member" 'Alexandre Rebert' which becomes quite visible
+inside the team statics of some teams.  It might be reasonable to avoid
+this by considering only those people "members" of a team who have posted
+to the list in at least three different monthes.
+
+teammetrics=# SELECT project, count(*) from listarchives where name like 'Alexandre Rebert' group by project ;
+          project           | count 
+----------------------------+-------
+ debian-ocaml-maint         |     2
+ debian-med-packaging       |   152
+ debian-boot                |     2
+ debian-x                   |     8
+ pkg-osm-maint              |     7
+ pkg-samba-maint            |     6
+ pkg-games-devel            |    57
+ debian-devel               |    13
+ pkg-multimedia-maintainers |    81
+ debian-science-maintainers |    76
+ debian-openoffice          |     2
+ debian-kernel              |     3
+ debichem-devel             |    24
+ pkg-grass-devel            |    50
+(14 rows)
+
