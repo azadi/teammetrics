@@ -51,6 +51,7 @@ WHITELIST = (
              'Dale E. Martin',
              'Daniel Nurmi',
              'Debian Calendarserver Team',
+             'Debian Cloud Team',
              'Debian Crosswire Packaging Team',
              'Debian Flash Team',
              'Debian FreeSmartphone.Org Team',
