@@ -21,7 +21,7 @@ CREATE OR REPLACE FUNCTION bug_closer_ids_of_pkggroup(text,int) RETURNS SETOF RE
    GROUP BY ce.id
    ORDER BY count DESC
    LIMIT $2
-$$ LANGUAGE 'SQL';
+$$ LANGUAGE SQL;
 
 /*
 SELECT * FROM bug_closer_ids_of_pkggroup('debian-med-packaging@lists.alioth.debian.org',50) AS (id int, count int);
@@ -54,7 +54,7 @@ CREATE OR REPLACE FUNCTION bug_closer_per_year_of_pkggroup(text,int) RETURNS SET
      AND cn.name = cnp.name
    GROUP BY cn.name, db.year
    ORDER BY year, count DESC, cn.name
-$$ LANGUAGE 'SQL';
+$$ LANGUAGE SQL;
 
 /*
 SELECT * FROM bug_closer_per_year_of_pkggroup('debian-med-packaging@lists.alioth.debian.org',50) AS (name text, year int, count int);
@@ -66,7 +66,7 @@ CREATE OR REPLACE FUNCTION bug_closer_names_of_pkggroup(text, int) RETURNS SETOF
   SELECT cnp.name FROM
     (SELECT id FROM bug_closer_ids_of_pkggroup($1, $2) AS (id int, count int)) au
     JOIN carnivore_names_prefered cnp ON au.id = cnp.id
-$$ LANGUAGE 'SQL';
+$$ LANGUAGE SQL;
 
 /*
 SELECT * FROM bug_closer_names_of_pkggroup('debian-med-packaging@lists.alioth.debian.org',50) AS (name text);
