@@ -115,8 +115,8 @@ def fetch_logs(ssh, conn, cur, teams, users):
                     try:
                         commit_hash, date_raw, changed, added, deleted = change.split(',')
                     except ValueError as detail:
-                        logging.error(detail)
-                        continue
+                        # When there are no deletions.
+                        deleted = 0
                     
                     # There are some invalid dates, just skip those commits.
                     try:
@@ -132,7 +132,9 @@ def fetch_logs(ssh, conn, cur, teams, users):
                         deleted = 0
                     else:
                         added = added.strip().split()[0]
-                        deleted = deleted.strip().split()[0]
+                        # There was no deletion specified, set it to zero.
+                        if not deleted:
+                            deleted = 0
 
                     if each_dir.endswith('.git'):
                         each_dir = each_dir[:-4]
