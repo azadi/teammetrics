@@ -14,7 +14,7 @@
 PORT=5452
 DEFAULTPORT=5432
 import psycopg2
-from sys import stderr, exit
+from sys import argv, stderr, exit
 import re
 
 debug=False
@@ -57,6 +57,7 @@ WHITELIST = (
              'Debian FreeSmartphone.Org Team',
              'Debian Libidn Team',
              'Debian Med Packaging Team',
+             'Debian OpenCL Maintainers',
              'Debian PHP PEAR Maintainers',
              'Debian Printing Group',
              'Debian running development group',
@@ -301,18 +302,24 @@ for r in allnames:
                                     print "Found %s in whitelist" % u[0]
                                 break
                         if prefered < 0:
+                            print >>stderr, "Please adjust prefered names in %s to propperly choose between the following options:" % argv[0]
+                            nc = 0
                             for n in usednames:
-                                print "(%d)\t%s (%d)" % (i, n[0], n[1])
+                                print >>stderr, "(%d)\t%s (%d)" % (i, n[0], n[1])
+                                if n[1] > nc:
+                                    nc = n[1]
+                                    si = i
                                 i += 1
-                            s = prompt("Please type number of prefered name: ")
-                            try:
-                                si = int(s) - 1
-                            except ValueError:
-                                print "Please insert integer number"
-                                continue
-                            if si < 0 or si >= i:
-                                print "Integer not in range"
-                                continue
+#                            s = prompt("Please type number of prefered name: ")
+#                            try:
+#                                si = int(s) - 1
+#                            except ValueError:
+#                                print "Please insert integer number"
+#                                continue
+#                            if si < 0 or si >= i:
+#                                print "Integer not in range"
+#                                continue
+                            print >>stderr, "For the moment we are choosing %s (%s)" % (si, usednames[si-1])
                             prefered = si
             try:
         	query = "EXECUTE insert_prefered_name (%d, %s)" % (id,  quote(usednames[prefered][0]))
