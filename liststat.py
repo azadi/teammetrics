@@ -22,6 +22,7 @@ which you can query to get the specific statistics you desire.
 import os
 import re
 import sys
+import time
 import gzip
 import email
 import logging
@@ -497,6 +498,8 @@ def main(conf_info, total_lists):
                     logging.info('\t%s' % mbox_name)
 
             count += 1
+            # Wait before continuing because Alioth rate-limits the requests.
+            time.sleep(300)
 
     # We don't need the mbox archives (gzipped), so delete them.
     if mbox_archives:
