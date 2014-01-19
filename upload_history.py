@@ -25,6 +25,7 @@ teams = {
           'ocaml-maintainers': 'debian-ocaml-maint@lists.debian.org'               ,
           'pkg-games':         'pkg-games-devel@lists.alioth.debian.org'           ,
           'pkg-exppsy':        'team@neuro.debian.net'                             ,
+          'pkg-ruby':          'pkg-ruby-extras-maintainers@lists.alioth.debian.org',
           'python-modules':    'python-modules-team@lists.alioth.debian.org'       ,
 #          'debian-python':     'debian-python@lists.debian.org'                    , # that's only one person
         }
@@ -90,6 +91,12 @@ elif argv[0].endswith('bug_close_history.py'):
     title                = 'Bugs'
     headline             = 'Bugs closed by'
     print "Calculate bug closing history"
+elif argv[0].endswith('sponsor_history.py'):
+    sql_procedure_prefix = 'active_sponsor'
+    outputname           = 'sponsors'
+    title                = 'Sponsors'
+    headline             = 'Sponsors of'
+    print "Calculate sponsoring history"
 else:
     print >>stderr, "Unexpected script name %s" % argv[0]
     exit(1)
