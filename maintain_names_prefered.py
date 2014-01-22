@@ -80,6 +80,7 @@ WHITELIST = (
              'Günter Milde',
              'Hubert Chan',
              'intrigeri',
+             'IOhannes m zmölnig',
              'Jameson Graef Rollins',
              'Jan Lübbe',
              'Javier Fernández-Sanguino Peña',
@@ -127,6 +128,7 @@ WHITELIST = (
              'Thomas Bushnell',
              'Tobias Quathamer',
              'Tony Palma',
+             'Dr. Torge Szczepanek',
              'Vanessa Gutiérrez',
              'W. Martin Borgert',
             )
