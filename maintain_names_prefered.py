@@ -81,6 +81,7 @@ WHITELIST = (
              'Hubert Chan',
              'intrigeri',
              'IOhannes m zmölnig',
+             'James McCoy',
              'Jameson Graef Rollins',
              'Jan Lübbe',
              'Javier Fernández-Sanguino Peña',
