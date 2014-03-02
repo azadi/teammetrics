@@ -23,6 +23,7 @@ CREATE TABLE listarchives (
     name                text,
     email_addr          text,
     subject             text,
+    references          text,
     message_id          text,
     archive_date        date,
     today_date          date,
