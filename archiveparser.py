@@ -18,7 +18,7 @@ import liststat
 import spamfilter
 
 BASE_URL = 'http://lists.debian.org/'
-FIELDS = ('From', 'Date', 'Subject', 'Message-id')
+FIELDS = ('From', 'Date', 'Subject', 'Message-id', 'References')
 
 LOG_FILE = '/var/log/teammetrics/liststat.log'
 CONFIG_FILE = '/var/cache/teammetrics/archiveparser.status'
@@ -262,6 +262,10 @@ def main(conn, cur):
                     today_raw = datetime.date.today()
                     today_date = today_raw.strftime('%Y-%m-%d')
 
+                    # References field.
+                    references = field.get('References')
+                    references = references.replace('&lt;', '').replace('&gt;', '')
+
                     # Message-id field.
                     # If no Message-id field found, generate a random one.
                     message_id = fields.get('Message-id',
@@ -281,9 +285,9 @@ def main(conn, cur):
                     try:
                         cur.execute(
                                 """INSERT INTO listarchives
-            (project, domain, name, email_addr, subject, message_id, archive_date, today_date, is_spam)
+            (project, domain, name, email_addr, subject, references, message_id, archive_date, today_date, is_spam)
                                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);""",
-        (lst_name, 'lists.debian.org', name, email, subject, message_id, final_date, today_date, is_spam)
+        (lst_name, 'lists.debian.org', name, email, subject, references, message_id, final_date, today_date, is_spam)
                                     )
                     except psycopg2.DataError as detail:
                         conn.rollback()
