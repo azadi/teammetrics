@@ -1,3 +1,5 @@
+-- ATTENTION: the sponsors stuff does not work yet!!!!
+
 -- top 10 maintainers as carnivore ID
 CREATE OR REPLACE FUNCTION active_uploader_ids_of_pkggroup(text,int) RETURNS SETOF RECORD AS $$
   SELECT ce.id
