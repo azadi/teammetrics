@@ -35,6 +35,7 @@ CREATE TABLE listarchives (
 );
 
 ALTER TABLE listarchives ADD CONSTRAINT PK_project_messageid PRIMARY KEY(project,message_id) ;
+ALTER TABLE listarchives ADD COLUMN reference_id text;
 
 CREATE TABLE commitstat (
     commit_id	    	text,
