@@ -265,6 +265,8 @@ def main(conn, cur):
                     # References field.
                     references = fields.get('References')
                     references = references.replace('&lt;', '').replace('&gt;', '')
+                    if not references:
+                        references = ""
 
                     # Message-id field.
                     # If no Message-id field found, generate a random one.
@@ -287,7 +289,7 @@ def main(conn, cur):
                                 """INSERT INTO listarchives
             (project, domain, name, email_addr, subject, references, message_id, archive_date, today_date, is_spam)
                                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);""",
-        (lst_name, 'lists.debian.org', name, email, subject, references, message_id, final_date, today_date, is_spam)
+        (lst_name, 'lists.debian.org', name, email, subject, reference_id, message_id, final_date, today_date, is_spam)
                                     )
                     except psycopg2.DataError as detail:
                         conn.rollback()
