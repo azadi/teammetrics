@@ -263,7 +263,7 @@ def main(conn, cur):
                     today_date = today_raw.strftime('%Y-%m-%d')
 
                     # References field.
-                    references = field.get('References')
+                    references = fields.get('References')
                     references = references.replace('&lt;', '').replace('&gt;', '')
 
                     # Message-id field.
