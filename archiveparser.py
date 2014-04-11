@@ -289,7 +289,7 @@ def main(conn, cur):
                         cur.execute(
                                 """INSERT INTO listarchives
             (project, domain, name, email_addr, subject, reference_id, message_id, archive_date, today_date, is_spam)
-                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);""",
+                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);""",
         (lst_name, 'lists.debian.org', name, email, subject, references, message_id, final_date, today_date, is_spam)
                                     )
                     except psycopg2.DataError as detail:
