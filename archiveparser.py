@@ -264,7 +264,8 @@ def main(conn, cur):
 
                     # References field.
                     references = fields.get('References')
-                    references = references.replace('&lt;', '').replace('&gt;', '')
+                    if references is not None:
+                        references = references.replace('&lt;', '').replace('&gt;', '')
                     if not references:
                         references = ""
 
