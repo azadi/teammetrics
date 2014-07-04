@@ -109,6 +109,7 @@ WHITELIST = (
              'Paolo Didonè',
              'Philip Blundell',
              'Picca Frédéric-Emmanuel',
+             'Praveen Arimbrathodiyil',
              'Øystein Gisnås',
              'Radovan Garabík',
              'Ramakrishnan Muthukrishnan',
@@ -132,6 +133,7 @@ WHITELIST = (
              'Dr. Torge Szczepanek',
              'Vanessa Gutiérrez',
              'W. Martin Borgert',
+             'Xavier Lüthi',
             )
 
 has_quotes_re = re.compile('".*"')
