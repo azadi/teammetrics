@@ -8,6 +8,7 @@ PLOTUPLOADERS=10
 MAXUPLOADERS=1000
 
 teams = { 
+          'debian-astro':      'debian-astro-maintainers@lists.alioth.debian.org'  ,
           'debian-med' :       'debian-med-packaging@lists.alioth.debian.org'      ,
           'debian-science':    'debian-science-maintainers@lists.alioth.debian.org',
           'debichem':          'debichem-devel@lists.alioth.debian.org'            ,
