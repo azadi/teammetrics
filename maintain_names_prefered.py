@@ -29,6 +29,7 @@ BLACKLIST = ('Thawte Freemail Member',
             )
 
 WHITELIST = (
+             '3-D printer team',
              'Abou Al Montacir',
              'Adam C. Powell IV',
              'Ahmed El-Said Atef El-Mahmoudy',
@@ -85,6 +86,7 @@ WHITELIST = (
              'Jameson Graef Rollins',
              'Jan Lübbe',
              'Javier Fernández-Sanguino Peña',
+             'Jérémie Corbier',
              'Jeremy Lainé',
              'Jérôme Marant',
              'Joel Aelwyn',
