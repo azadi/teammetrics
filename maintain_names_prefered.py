@@ -75,6 +75,7 @@ WHITELIST = (
              'Francisco Manuel Garcia Claramonte',
              'Francois D. Menard',
              'Frederik Schüler',
+             'Ghislain Antony Vaillant',
              'Giuliano P Procida',
              'GOsa packages maintainers group',
              'Guido Günther',
