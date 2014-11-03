@@ -33,7 +33,7 @@ LOG_FILE_PATH = os.path.join(LOG_SAVE_DIR, LOG_FILE)
 CONF_FILE = 'commitinfo.conf'
 CONF_FILE_PATH = os.path.join('/etc/teammetrics', CONF_FILE)
 
-SERVER = 'vasks.debian.org'
+SERVER = 'moszumanska.debian.org'
 USER_CMD = False
 USER = 'sukhbir-guest'
 
