@@ -182,7 +182,12 @@ def main(conn, cur):
                     soup = BeautifulSoup(message_read)
 
                     # Now we are at a single message, so parse it.
-                    body = soup.body.ul
+                    try:
+                        body = soup.body.ul
+                    except AttributeError, err:
+                        logging.error('Skipping message: %s' % str(err))
+                        skipped_messages += 1
+                        continue
                     all_elements = body.findAll('li')
                     # Fetch the text of all elements in FIELDS.
                     all_elements_text = [element.text for element in all_elements
