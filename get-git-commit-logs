@@ -8,7 +8,7 @@ PROJECTS="debian-med
          "
 
 for project in $PROJECTS; do
-    echo $project
+    # echo $project
     cd /git/$project
     curdir=`pwd`
     echo "{project:$project, data:" >> $data
