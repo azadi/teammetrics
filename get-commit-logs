@@ -1,6 +1,7 @@
 #!/bin/sh
-data=`pwd`/commits.yaml
-rm -f $data
+webdir=/srv/alioth.debian.org/chroot/home/groups/teammetrics/htdocs/commitstats
+data=$webdir/commits.yaml
+rm -f $data.bz2
 PROJECTS="debian-med
           debian-science
           pkg-grass
@@ -21,3 +22,4 @@ for project in $PROJECTS; do
     done
     echo "}" >> $data
 done
+bzip2 $data
