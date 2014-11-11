@@ -1,6 +1,6 @@
 #!/bin/sh
 webdir=/srv/alioth.debian.org/chroot/home/groups/teammetrics/htdocs/commitstats
-data=$webdir/commits.yaml
+data=$webdir/git-commits.yaml
 rm -f $data.bz2
 PROJECTS="debian-med
           debian-science
