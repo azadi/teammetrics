@@ -1,18 +1,23 @@
 #!/bin/sh
 data=`pwd`/commits.yaml
 rm -f $data
-project=debian-med
+PROJECTS="debian-med
+          debian-science
+          pkg-grass
+         "
 
-cd /git/$project
-curdir=`pwd`
-echo "{project:$project, data:" >> $data
-for repodir in `find . -name "*.git"` ; do
+for project in $PROJECTS; do
+    echo $project
+    cd /git/$project
+    curdir=`pwd`
+    echo "{project:$project, data:" >> $data
+    for repodir in `find . -name "*.git"` ; do
 	cd $repodir
 	repo=`basename $repodir .git`
-	echo $repo
 	echo "  {package:$repo, commits:" >> $data
-	git log --date=short --pretty=format:'    {commit_id:%H, name:"%an", e-mail:%ae, commit_date:%ad},' >> $data
+	git log --no-merges --date=short --pretty=format:'    {commit_id:%H, name:"%an", e-mail:%ae, commit_date:%ad},' -- debian >> $data 2>/dev/null
         echo "  }," >> $data
 	cd $curdir
+    done
+    echo "}" >> $data
 done
-echo "}" >> $data
