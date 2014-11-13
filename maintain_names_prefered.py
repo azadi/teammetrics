@@ -58,6 +58,7 @@ WHITELIST = (
              'Debian FreeSmartphone.Org Team',
              'Debian GnuPG Maintainers',
              'Debian Libidn Team',
+             'Debian LibreOffice Maintainers',
              'Debian Med Packaging Team',
              'Debian OpenCL Maintainers',
              'Debian PHP PEAR Maintainers',
