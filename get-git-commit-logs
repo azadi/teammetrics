@@ -2,24 +2,30 @@
 webdir=/srv/alioth.debian.org/chroot/home/groups/teammetrics/htdocs/commitstats
 data=$webdir/git-commits.yaml
 rm -f $data.bz2
-PROJECTS="debian-med
-          debian-science
-          pkg-grass
-         "
+
+#PROJECTS="debian-med
+#          debian-science
+#          pkg-grass
+#         "
+PROJECTS=`grep -v -e '^$' -e '^\[.*\]' ~/etc/teammetrics/commitinfo.conf | sed -e 's/^team[[:space:]]*=[[:space:]]*//' -e 's/^[[:space:]]*//'`
 
 for project in $PROJECTS; do
     # echo $project
-    cd /git/$project
-    curdir=`pwd`
-    echo "{project:$project, data:" >> $data
-    for repodir in `find . -name "*.git"` ; do
-	cd $repodir
-	repo=`basename $repodir .git`
-	echo "  {package:$repo, commits:" >> $data
-	git log --no-merges --date=short --pretty=format:'    {commit_id:%H, name:"%an", e-mail:%ae, commit_date:%ad},' -- debian >> $data 2>/dev/null
-        echo "  }," >> $data
-	cd $curdir
+    if [ -d /git/$project ] ; then
+        cd /git/$project
+        curdir=`pwd`
+        echo "{project:$project, data:" >> $data
+        for repodir in `find . -name "*.git" 2>/dev/null` ; do
+            cd $repodir 2>/dev/null
+	    if [ $? -eq 0 ] ; then
+	        repo=`basename $repodir .git`
+	        echo "  {package:$repo, commits:" >> $data
+	        git log --no-merges --date=short --pretty=format:'    {commit_id:%H, name:"%an", e-mail:%ae, commit_date:%ad},' -- debian >> $data 2>/dev/null
+                echo "  }," >> $data
+	        cd $curdir
+	    fi
+        done
+        echo "}" >> $data
     done
-    echo "}" >> $data
 done
 bzip2 $data

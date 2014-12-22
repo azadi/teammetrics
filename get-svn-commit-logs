@@ -2,10 +2,11 @@
 webdir=/srv/alioth.debian.org/chroot/home/groups/teammetrics/htdocs/commitstats
 data=$webdir/svn-commits.yaml
 rm -f $data.bz2
-PROJECTS="debian-med
-          debian-science
-          pkg-grass
-         "
+#PROJECTS="debian-med
+#          debian-science
+#          pkg-grass
+#         "
+PROJECTS=`grep -v -e '^$' -e '^\[.*\]' ~/etc/teammetrics/commitinfo.conf | sed -e 's/^team[[:space:]]*=[[:space:]]*//' -e 's/^[[:space:]]*//'`
 
 for project in $PROJECTS; do
     echo "{project:$project, data:" >> $data
