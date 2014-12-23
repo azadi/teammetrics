@@ -26,6 +26,6 @@ for project in $PROJECTS; do
 	    fi
         done
         echo "}" >> $data
-    done
+    fi
 done
 bzip2 $data
