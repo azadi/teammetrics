@@ -68,6 +68,34 @@ def start_logging():
                         level=logging.INFO,
                         format='%(asctime)s %(levelname)s: %(message)s')
 
+def get_git_commits(project):
+    data=[]
+    gitbase='/git/'+project
+    if not os.path.isdir(gitbase):
+        logging.warning('No such directory %s.  Ignore Git repositories of %s.' % (gitbase, project))
+        return []
+    gitdirs=os.popen('find %s -name "*[-a-z0-9+].git" 2>/dev/null' % gitbase)
+    for gitr in gitdirs.readlines():
+        gdata = {}
+        gitr = gitr.strip()
+        if not os.path.isdir(gitr) and not os.path.islink(gitr):  ##  FIXME: islink needs to be removed after testing!!!!!
+            logging.error('%s is no directory.' % gitr)
+            continue
+        package = re.sub("^.*/([^/]*)\.git", '\\1', gitr)
+        gdata['package'] = package
+        gdata['commits'] = []
+        gcmd=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''', '--', 'debian'] # >> $data 2>/dev/null'
+        # print gitr
+        gitcom = subprocess.Popen(gcmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gitr)
+        gitcom.wait()
+        (stdoutdata, stderrdata) = gitcom.communicate()
+        for com in stdoutdata.split('\n'):
+            commit = ast.literal_eval(com)
+            # print commit
+            gdata['commits'].append(commit)
+        data.append(gdata)
+    return data
+
 if __name__ == '__main__':
     start_logging()
     logging.info('\t\tStarting CommitStat')
@@ -78,31 +106,10 @@ if __name__ == '__main__':
     for project in teams:
         data = {}
         data['project'] = project
-        data['data']    = []
-	gitbase='/git/'+project
-        if not os.path.isdir(gitbase):
-            logging.warning('No such directory %s.  Ignore Git repositories of %s.' % (gitbase, project))
+        gd = get_git_commits(project)
+        if not gd:
             continue
-        gitdirs=os.popen('find %s -name "*[-a-z0-9+].git" 2>/dev/null' % gitbase)
-        for gitr in gitdirs.readlines():
-            gdata = {}
-            gitr = gitr.strip()
-            if not os.path.isdir(gitr) and not os.path.islink(gitr):  ##  FIXME: islink needs to be removed after testing!!!!!
-                logging.error('%s is no directory.' % gitr)
-                continue
-	    package = re.sub("^.*/([^/]*)\.git", '\\1', gitr)
-            gdata['package'] = package
-            gdata['commits'] = []
-            gcmd=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''', '--', 'debian'] # >> $data 2>/dev/null'
-            # print gitr
-            gitcom = subprocess.Popen(gcmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gitr)
-            gitcom.wait()
-            (stdoutdata, stderrdata) = gitcom.communicate()
-            for com in stdoutdata.split('\n'):
-                commit = ast.literal_eval(com)
-                # print commit
-                gdata['commits'].append(commit)
-            data['data'].append(gdata)
+        data['git'] = gd
         gitdata.append(data)
     f = open(outputfile, 'w')
     print >>f, json.dumps(gitdata)
