@@ -11,7 +11,7 @@ import ConfigParser
 
 webdir='/srv/alioth.debian.org/chroot/home/groups/teammetrics/htdocs/commitstats'
 webdir='.' ## FIXME
-outputfile=webdir+'/git-commits.json'
+outputfile=webdir+'/commits.json'
 
 LOG_FILE = 'commitstat.log'
 LOG_SAVE_DIR = os.path.expanduser("~")+ '/log'
@@ -19,6 +19,8 @@ LOG_FILE_PATH = os.path.join(LOG_SAVE_DIR, LOG_FILE)
 
 CONF_FILE = 'commitinfo.conf'
 CONF_FILE_PATH = os.path.join(os.path.expanduser("~") + '/etc/teammetrics', CONF_FILE)
+
+svncommit_re = re.compile('^(r\d+)\s*\|\s*(\w+)\s*\|\s*([-0-9]+)\s.*')
 
 def get_configuration():
     """Read configuration data of repositories whose logs have to be fetched.
@@ -85,7 +87,6 @@ def get_git_commits(project):
         gdata['package'] = package
         gdata['commits'] = []
         gcmd=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''', '--', 'debian'] # >> $data 2>/dev/null'
-        # print gitr
         gitcom = subprocess.Popen(gcmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gitr)
         gitcom.wait()
         (stdoutdata, stderrdata) = gitcom.communicate()
@@ -96,21 +97,43 @@ def get_git_commits(project):
         data.append(gdata)
     return data
 
+def get_svn_commits(project):
+    data=[]
+    scmd='svn log svn://localhost/svn/'+project
+    # here we use os.popen since subprocess.Popen() does not seem to end :-(
+    svnout = os.popen(scmd)
+    for com in svnout.readlines():
+        com = com.strip()
+        if com == '':
+            continue
+        m = svncommit_re.match(com)
+        if not m:
+            continue
+        commit = {}
+        commit['commit_id']   = m.group(1)
+        commit['name']        = m.group(2)
+        commit['commit_date'] = m.group(3)
+        data.append(commit)
+
 if __name__ == '__main__':
     start_logging()
     logging.info('\t\tStarting CommitStat')
 
     teams = get_configuration()
+    teams = ['debian-med'] ## FIXME
     logging.info('Measuring performance of %d teams' % len(teams))
-    gitdata=[]
+    commitdata=[]
     for project in teams:
         data = {}
         data['project'] = project
-        gd = get_git_commits(project)
-        if not gd:
-            continue
-        data['git'] = gd
-        gitdata.append(data)
+        gd = []  ## FIXME
+        ## gd = get_git_commits(project)  ## FIXME
+        if gd:
+            data['git'] = gd
+        sv = get_svn_commits(project)
+        if sv:
+            data['svn'] = sv
+        commitdata.append(data)
     f = open(outputfile, 'w')
-    print >>f, json.dumps(gitdata)
+    print >>f, json.dumps(commitdata)
     f.close()
