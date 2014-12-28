@@ -2,8 +2,8 @@
 
 DB=teammetrics
 
-createuser --superuser tille
-createuser --createdb --createrole sukhbir
+# createuser --superuser tille
+# createuser --createdb --createrole sukhbir
 
 createdb $DB
 
@@ -30,8 +30,7 @@ CREATE TABLE listarchives (
     msg_no_blank_len    int,
     msg_no_quotes_len   int,
     msg_no_sig_len      int,
-    is_spam             boolean,
-    reference_id        text,
+    is_spam             boolean
 );
 
 ALTER TABLE listarchives ADD CONSTRAINT PK_project_messageid PRIMARY KEY(project,message_id) ;
@@ -61,7 +60,7 @@ CREATE OR REPLACE FUNCTION author_names_of_list(text,int) RETURNS SETOF RECORD A
       ORDER BY count DESC
       LIMIT \$2
   ) tmp
-' LANGUAGE 'SQL';
+' LANGUAGE sql;
 
 /*
 SELECT * FROM author_names_of_list('soc-coordination', 12) AS (category text) ;
@@ -77,7 +76,7 @@ CREATE OR REPLACE FUNCTION author_per_year_of_list(text,int) RETURNS SETOF RECOR
   ) tmp
   GROUP BY name, year
   ORDER BY year, count DESC, name
-' LANGUAGE 'SQL';
+' LANGUAGE sql;
 
 /*
 SELECT * FROM author_per_year_of_list('soc-coordination', 12) AS (author text, year int, value int) ;
@@ -94,7 +93,7 @@ CREATE OR REPLACE FUNCTION commit_names_of_project(text,int) RETURNS SETOF RECOR
       ORDER BY count DESC
       LIMIT \$2
   ) tmp
-' LANGUAGE 'SQL';
+' LANGUAGE sql;
 
 /*
 SELECT * FROM commit_names_of_project('teammetrics', 12) AS (category text) ;
@@ -110,7 +109,7 @@ CREATE OR REPLACE FUNCTION commmit_per_year_of_project(text,int) RETURNS SETOF R
   ) tmp
   GROUP BY name, year
   ORDER BY year, count DESC, name
-' LANGUAGE 'SQL';
+' LANGUAGE sql;
 
 /*
 SELECT * FROM commit_per_year_of_project('teammetrics', 12) AS (author text, year int, value int) ;
@@ -128,7 +127,7 @@ CREATE OR REPLACE FUNCTION commitlines_names_of_project(text,int,int) RETURNS SE
       ORDER BY count DESC
       LIMIT \$2
   ) tmp
-' LANGUAGE 'SQL';
+' LANGUAGE sql;
 
 /*
 SELECT * FROM commitlines_names_of_project('teammetrics', 12, 10000) AS (category text) ;
@@ -145,7 +144,7 @@ CREATE OR REPLACE FUNCTION commmitlines_per_year_of_project(text,int,int) RETURN
   ) tmp
   GROUP BY name, year
   ORDER BY year, count DESC, name
-' LANGUAGE 'SQL';
+' LANGUAGE sql;
 
 /*
 SELECT * FROM commitlines_per_year_of_project('teammetrics', 12, 10000) AS (author text, year int, value int) ;
