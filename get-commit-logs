@@ -115,9 +115,11 @@ def get_git_commits(project):
 
 def get_svn_commits(project):
     data=[]
-    scmd='svn log svn://localhost/svn/'+project+' 2> /dev/null'
+    # option -r 1:HEAD does some pre-sorting
+    scmd='svn log -r 1:HEAD svn://localhost/svn/'+project+' 2> /dev/null'
     # here we use os.popen since subprocess.Popen() does not seem to end :-(
     svnout = os.popen(scmd)
+    ids=[]
     for com in svnout.readlines():
         com = com.strip()
         if com == '':
@@ -125,6 +127,10 @@ def get_svn_commits(project):
         m = svncommit_re.match(com)
         if not m:
             continue
+        if m.group(1) in ids:
+            logging.info("Ignore duplicated commit in project %s: %s" % (project, com))
+            continue
+        ids.append(m.group(1))
         commit = {}
         commit['commit_id']   = m.group(1)
         commit['name']        = m.group(2)
