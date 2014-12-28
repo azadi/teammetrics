@@ -23,7 +23,6 @@ CREATE TABLE listarchives (
     name                text,
     email_addr          text,
     subject             text,
-    references          text,
     message_id          text,
     archive_date        date,
     today_date          date,
@@ -31,7 +30,8 @@ CREATE TABLE listarchives (
     msg_no_blank_len    int,
     msg_no_quotes_len   int,
     msg_no_sig_len      int,
-    is_spam             boolean
+    is_spam             boolean,
+    reference_id        text,
 );
 
 ALTER TABLE listarchives ADD CONSTRAINT PK_project_messageid PRIMARY KEY(project,message_id) ;
