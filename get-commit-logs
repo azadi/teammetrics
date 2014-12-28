@@ -163,4 +163,4 @@ if __name__ == '__main__':
         logging.error("%s --> try latin1" % str(err))
         print >>f, json.dumps(commitdata, encoding='latin1')
     f.close()
-    os.system('bzip2 '+outputfile)
+    os.system('bzip2 --force '+outputfile)
