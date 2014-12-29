@@ -48,8 +48,8 @@ if __name__ == '__main__':
     os.system('mkdir -p '+cachedir)
 
     ### FIXME
-    #urllib.urlretrieve (downloadurl+'/'+commits+'.bz2', cachedir+'/'+commits+'.bz2')
-    #os.system('bunzip2 -f '+cachedir+'/'+commits+'.bz2')
+    urllib.urlretrieve (downloadurl+'/'+commits+'.bz2', cachedir+'/'+commits+'.bz2')
+    os.system('bunzip2 -f '+cachedir+'/'+commits+'.bz2')
 
     comfp = open(cachedir+'/'+commits)
     # comfp = open(cachedir+'/zw.json')
@@ -84,14 +84,25 @@ if __name__ == '__main__':
     cur.execute(query)
 
     svnquery = "EXECUTE svn_insert (%(commit_id)s, %(project)s, %(name)s, %(commit_date)s)"
+    gitquery = "EXECUTE git_insert (%(commit_id)s, %(project)s, %(package)s, %(name)s, %(commit_date)s)"
     for prj in data:
         print prj['project']
         if prj.has_key('svn'):
-            print "svn =", len(prj['svn']),
             for com in prj['svn']:
                 com['project'] = prj['project']
                 cur.execute(svnquery, com)
         if prj.has_key('git'):
+            for commits in prj['git']:
+                for com in commits['commits']:
+                    com['project'] = prj['project']
+                    com['package'] = commits['package']
+                    if com['commit_id'].startswith('2fb8a7ce709db3ec82b90b9c4b5c1224e721b700'):
+                        print "project:%s, package:%s, commit_id:%s" % (com['project'], com['package'], com['commit_id'])
+                    try:
+                        cur.execute(gitquery, com)
+                    except psycopg2.IntegrityError, err:
+                        print "project:%s, package:%s" % (com['project'], com['package'])
+                        print err
             print "git =", len(prj['git'])
 
     conn.commit()
