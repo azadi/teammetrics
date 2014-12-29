@@ -78,6 +78,7 @@ Barry deFreese                  :           bddebian-guest, bdefreese
 Bart Cornelis                   :           cobaco%
 Bastian Blank                   :           waldi
 Ben Armstrong                   :           synrg
+Ben Collins                     :           bcollins
 Ben Hutchings                   :           benh
 Benjamin Drung                  :           %bdrung%, bdrung-guest
 Benjamin Mesing                 :           bmesing-guest
@@ -221,6 +222,7 @@ Francesca Ciceri                :           madamezou, madamezou-guest
 Francesco P. Lovergine          :           Francesco%Lovergine, frankie, frankie@haydn.debian.org
 Francois Marier                 :           francois
 Frank S. Thomas                 :           fst, fst-guest
+Frans Pop                       :           fjp
 Frederic Lehobey                :           fdl-guest, Frederic Daniel Luc Lehobey
 Frederik Schüler                :           fs, fschueler-guest
 Free Ekanayaka                  :           free-guest, freee%
@@ -307,6 +309,7 @@ Jeroen van Wolffelaar           :           jeroen
 Jerome Alet                     :           jalet-guest
 Jerome Marant                   :           jerome
 Jerry Haltom                    :           wasabi-guest
+Jim Westveer                    :           jwest
 Jo Shields                      :           directhex, directhex-guest
 Joachim Breitner                :           nomeata
 Joerg Jaspert                   :           joerg
@@ -516,6 +519,7 @@ Peter Rockai                    :           mornfall-guest
 Peter S. Galbraith              :           psg
 Peter Van Eynde                 :           pvaneynd%, Peter%Van%Eynde%
 Petter Reinholdtsen             :           pere, pere@haydn.debian.org
+Philip Hands                    :           philh
 Philipp Benner                  :           philipp, pbenner-guest
 Philipp Kern                    :           pkern
 Philipp Meier                   :           llucifer-guest
@@ -534,7 +538,7 @@ Rafael Laboissiere              :           rafael
 Ralf Gesellensetter             :           Ralf%setter
 Ralf Treinen                    :           treinen
 Randolph Chung                  :           randolph
-Raphael Hertzog                 :           hertzog
+Raphael Hertzog                 :           hertzog, Rapha%l Hertzog
 Raphaël Enrici                  :           blacknoz-guest
 Raúl Sánchez Siles              :           kebianizao-guest
 Reinhard Tartler                :           siretart, siretart-guest 
@@ -570,6 +574,7 @@ Samuel Garcia                   :           Samuel GARCIA
 Samuel Mimram                   :           smimram, smimram-guest
 Samuel Thibault                 :           sthibaul-guest, sthibault
 Sandro Tosi                     :           morph
+Santiago Garcia Mantinan        :           manty
 Sargis Dallakyan                :           sargis, sargis-guest
 Scott Christley                 :           schristley-guest
 Scott Kitterman                 :           kitterman
@@ -604,6 +609,7 @@ Steve Doonan                    :           xscd-guest
 Steve Halasz                    :           stevehalasz, shalasz-guest
 Steve Kostecke                  :           steve
 Steve Langasek                  :           vorlon
+Steve McIntyre                  :           93sam
 Steven M. Robbins               :           Steve%Robbins, smr
 Stig E Sandoe                   :           stig
 Stuart Prescott                 :           themill-guest
