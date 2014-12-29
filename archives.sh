@@ -48,7 +48,7 @@ CREATE TABLE commitstat (
     lines_deleted       int
 );
 
-ALTER TABLE commitstat ADD CONSTRAINT PK_commit_id PRIMARY KEY(commit_id, project) ;
+ALTER TABLE commitstat ADD CONSTRAINT PK_commit_id PRIMARY KEY(commit_id, project, package) ;
 
 -- top N authors of mailing list
 CREATE OR REPLACE FUNCTION author_names_of_list(text,int) RETURNS SETOF RECORD AS '
