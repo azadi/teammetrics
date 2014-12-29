@@ -214,7 +214,7 @@ Felix Geyer                     :           debfx-guest
 Fernando C. Estrada             :           fcestrada-guest
 Fernando Ike                    :           fike-guest
 Filipe Lautert                  :           filipe-guest
-Filippo Rusconi                 :           Filippo Rusconi (Debian Maintainer), rusconi
+Filippo Rusconi                 :           Filippo Rusconi%, rusconi
 Florent Angly                   :           fangly-guest
 Florian Grandel                 :           jerico-guest
 Florian Ragwitz                 :           florian-guest
@@ -474,8 +474,7 @@ Nelson A. de Oliveira           :           naoliv
 Nicholas Bamber                 :           periapt-guest
 Nicholas Breen                  :           nbreen%, nbreen-guest
 Nicolas Caniart                 :           ncaniart-guest
-Nicolas FRANÇOIS                :           fzt
-Nicolas FRANÇOIS                :           nekral-guest
+Nicolas FRANÇOIS                :           fzt, nekral-guest
 Nicolas Valcárcel               :           nxvl-guest
 Nicolas Évrard                  :           Nicolas %vrard
 Niels Thykier                   :           nthykier-guest
@@ -507,7 +506,7 @@ Paolo Ariano                    :           paolinux-guest
 Patrick Matthäi                 :           pmatthaei
 Patrick Winnertz                :           winnie
 Paul Cager                      :           paulcager-guest
-Paul Tagliamonte                :           paultag-guest
+Paul Richards Tagliamonte       :           Paul Tagliamonte, paultag, paultag-guest
 Paul Wise                       :           pabs, pabs-guest, pabs-guest@haydn.debian.org
 Paweł Sadkowski                 :           azhag-guest
 Peter Collingbourne             :           pcc-guest
