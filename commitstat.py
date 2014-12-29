@@ -47,7 +47,6 @@ if __name__ == '__main__':
     # get_stats()
     os.system('mkdir -p '+cachedir)
 
-    ### FIXME
     urllib.urlretrieve (downloadurl+'/'+commits+'.bz2', cachedir+'/'+commits+'.bz2')
     os.system('bunzip2 -f '+cachedir+'/'+commits+'.bz2')
 
@@ -86,7 +85,6 @@ if __name__ == '__main__':
     svnquery = "EXECUTE svn_insert (%(commit_id)s, %(project)s, %(name)s, %(commit_date)s)"
     gitquery = "EXECUTE git_insert (%(commit_id)s, %(project)s, %(package)s, %(name)s, %(commit_date)s)"
     for prj in data:
-        print prj['project']
         if prj.has_key('svn'):
             for com in prj['svn']:
                 com['project'] = prj['project']
@@ -101,7 +99,6 @@ if __name__ == '__main__':
                     except psycopg2.IntegrityError, err:
                         print "project:%s, package:%s" % (com['project'], com['package'])
                         print err
-            print "git =", len(prj['git'])
 
     conn.commit()
     cur.close()
