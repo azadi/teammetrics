@@ -96,8 +96,6 @@ if __name__ == '__main__':
                 for com in commits['commits']:
                     com['project'] = prj['project']
                     com['package'] = commits['package']
-                    if com['commit_id'].startswith('2fb8a7ce709db3ec82b90b9c4b5c1224e721b700'):
-                        print "project:%s, package:%s, commit_id:%s" % (com['project'], com['package'], com['commit_id'])
                     try:
                         cur.execute(gitquery, com)
                     except psycopg2.IntegrityError, err:

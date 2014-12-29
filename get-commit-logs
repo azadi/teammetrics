@@ -80,6 +80,7 @@ def get_git_commits(project):
         logging.warning('No such directory %s.  Ignore Git repositories of %s.' % (gitbase, project))
         return []
     gitdirs=os.popen('find %s -name "*[-a-z0-9+].git" 2>/dev/null' % gitbase)
+    packages=[]
     for gitr in gitdirs.readlines():
         gdata = {}
         gitr = gitr.strip()
@@ -91,7 +92,9 @@ def get_git_commits(project):
             logging.warning('Suspicious repository %s of project %s ignored' % (gitr, project))
             continue
         package = re.sub("^.*/([^/]*)\.git", '\\1', gitr)
-        # print package
+        if package in packages:
+            logging.info("Ignore duplicated package in project %s: %s (%s)" % (project, package, gitr))
+            continue
         gdata['package'] = package
         gdata['commits'] = []
         gcmd=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''', '--', 'debian'] # >> $data 2>/dev/null'
@@ -117,6 +120,7 @@ def get_git_commits(project):
             gdata['commits'].append(commit)
         logging.debug("project %s package %s Git done" % (project, package))
         data.append(gdata)
+        packages.append(package)
     return data
 
 def get_svn_commits(project):
