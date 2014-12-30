@@ -20,6 +20,7 @@ CONF_FILE = 'commitinfo.conf'
 CONF_FILE_PATH = os.path.join(os.path.expanduser("~") + '/etc/teammetrics', CONF_FILE)
 
 svncommit_re = re.compile('^(r\d+)\s*\|\s*(\w+)\s*\|\s*([-0-9]+)\s.*')
+gitcommit_re = re.compile('^{"commit_id":"(.+)", "name":"(.*)", "e-mail":"(.*)", "commit_date":"([-0-9]+)"}$')
 gitcheckduplicate_re = re.compile('^.*/(\w+).git/(\w+).git$')
 
 def get_configuration():
@@ -69,6 +70,17 @@ def start_logging():
     logging.basicConfig(filename=LOG_FILE_PATH,
                         level=logging.DEBUG, ## INFO,   FIXME
                         format='%(asctime)s %(levelname)s: %(message)s')
+
+def to_unicode(value, encoding='utf-8'):
+    if isinstance(value, str):
+        try:
+            return value.decode(encoding)
+        except UnicodeDecodeError, err:
+            logging.error("type(value) = %s; isinstance(value, str) = %s; err = %s" % (str(type(value)), str(isinstance(value, str)), str(err)))
+            logging.error(value)
+            return '???'
+    else:
+        return unicode(value)
 
 def get_git_commits(project):
     data=[]
@@ -124,9 +136,16 @@ def get_git_commits(project):
                 commit = ast.literal_eval(com)
             except SyntaxError:
                 # some people have fun to spell their nicknames with "" pairs ...
-                com = re.sub('"}', "'}", re.sub('",', "',", re.sub(':"', ":'", com)))
-                # print "Fixed: ", com
-                commit = ast.literal_eval(com)
+                m = gitcommit_re.match(com)
+                if not m:
+                    logging.error('Problem importing single commit in project %s package %s: %s' % (project, package, str(com)))
+                    continue
+                commit = {}
+                commit['commit_id']   = m.group(1)
+                commit['name']        = m.group(2)
+                commit['e-mail']      = m.group(3)
+                commit['commit_date'] = m.group(4)
+            commit['name'] = to_unicode(commit['name'])
             gdata['commits'].append(commit)
         logging.debug("project %s package %s Git done" % (project, package))
         data.append(gdata)
@@ -166,7 +185,6 @@ if __name__ == '__main__':
     logging.info('Measuring performance of %d teams' % len(teams))
     commitdata=[]
     for project in teams:
-        # print project
         data = {}
         data['project'] = project
         gd = get_git_commits(project)
