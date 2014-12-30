@@ -108,7 +108,17 @@ def get_git_commits(project):
         if len(stderrdata) != 0:
             logging.error('Problem when fetching Git commits of project %s package %s: %s' % (project, package, str(stderrdata).strip()))
         if len(stdoutdata) == 0:
-            continue
+            if len(stderrdata) != 0:
+                continue
+            logging.warning('Git log returned no data in project %s package %s ... do not restrict to debian/ dir only' % (project, package))
+            gcmd=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}'''] # >> $data 2>/dev/null'
+            gitcom = subprocess.Popen(gcmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gitr)
+            (stdoutdata, stderrdata) = gitcom.communicate()
+            if len(stderrdata) != 0:
+                logging.error('Problem when fetching Git commits of project %s package %s: %s' % (project, package, str(stderrdata).strip()))
+            if len(stdoutdata) == 0:
+                logging.warning('Git log returned no data in project %s package %s: Empty repository?' % (project, package))
+                continue
         for com in stdoutdata.split('\n'):
             try:
                 commit = ast.literal_eval(com)
