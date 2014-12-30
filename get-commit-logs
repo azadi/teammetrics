@@ -71,14 +71,18 @@ def start_logging():
                         level=logging.DEBUG, ## INFO,   FIXME
                         format='%(asctime)s %(levelname)s: %(message)s')
 
-def to_unicode(value, encoding='utf-8'):
+def to_unicode(commit, encoding='utf-8'):
+    value=commit['name']
     if isinstance(value, str):
         try:
             return value.decode(encoding)
         except UnicodeDecodeError, err:
-            logging.error("type(value) = %s; isinstance(value, str) = %s; err = %s" % (str(type(value)), str(isinstance(value, str)), str(err)))
-            logging.error(value)
-            return '???'
+            try:
+                return value.decode('latin-1')
+            except UnicodeDecodeError, err:
+                logging.error("type(value) = %s; isinstance(value, str) = %s; err = %s" % (str(type(value)), str(isinstance(value, str)), str(err)))
+                logging.error(commit)
+                return '???'
     else:
         return unicode(value)
 
@@ -91,7 +95,7 @@ def get_git_commits(project):
     if not os.path.isdir(gitbase):
         logging.warning('No such directory %s.  Ignore Git repositories of %s.' % (gitbase, project))
         return []
-    gitdirs=os.popen('find %s -name "*[-a-z0-9+].git" 2>/dev/null' % gitbase)
+    gitdirs=os.popen('find %s -type d -name "*[-a-z0-9+].git" 2>/dev/null' % gitbase)
     packages=[]
     for gitr in gitdirs.readlines():
         gdata = {}
@@ -118,7 +122,14 @@ def get_git_commits(project):
         #gitcom.wait()
         (stdoutdata, stderrdata) = gitcom.communicate()
         if len(stderrdata) != 0:
-            logging.error('Problem when fetching Git commits of project %s package %s: %s' % (project, package, str(stderrdata).strip()))
+            errdata = str(stderrdata).strip()
+            if errdata.endswith("fatal: bad default revision 'HEAD'"):
+                logging.warning("Git repository of project %s package %s not initialised" % (project, package))
+                continue
+            if errdata.endswith("fatal: Not a git repository (or any parent up to mount point /srv)"):
+                logging.warning("No git repository in dir %s of project %s" % (gitr, project))
+                continue
+            logging.error('Problem when fetching Git commits of project %s package %s: %s' % (project, package, errdata))
         if len(stdoutdata) == 0:
             if len(stderrdata) != 0:
                 continue
@@ -145,7 +156,7 @@ def get_git_commits(project):
                 commit['name']        = m.group(2)
                 commit['e-mail']      = m.group(3)
                 commit['commit_date'] = m.group(4)
-            commit['name'] = to_unicode(commit['name'])
+            commit['name'] = to_unicode(commit)
             gdata['commits'].append(commit)
         logging.debug("project %s package %s Git done" % (project, package))
         data.append(gdata)
