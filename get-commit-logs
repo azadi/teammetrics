@@ -12,6 +12,11 @@ import ConfigParser
 webdir='/srv/alioth.debian.org/chroot/home/groups/teammetrics/htdocs/commitstats'
 outputfile=webdir+'/commits.json'
 
+# FIXME: Should be solved with config file
+NATIVEPROJECTS=['d-i', 'blends']
+pkggcmd=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''', '--', 'debian']
+nativgcmd=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''']
+
 LOG_FILE = 'commitstat.log'
 LOG_SAVE_DIR = os.path.expanduser("~")+ '/log'
 LOG_FILE_PATH = os.path.join(LOG_SAVE_DIR, LOG_FILE)
@@ -97,6 +102,11 @@ def get_git_commits(project):
         return []
     gitdirs=os.popen('find %s -type d -name "*[-a-z0-9+].git" 2>/dev/null' % gitbase)
     packages=[]
+    if project in NATIVEPROJECTS:
+        gcmd=nativgcmd
+        logging.info('Project %s is Debian native project' % project)
+    else:
+        gcmd=pkggcmd
     for gitr in gitdirs.readlines():
         gdata = {}
         gitr = gitr.strip()
@@ -113,7 +123,6 @@ def get_git_commits(project):
             continue
         gdata['package'] = package
         gdata['commits'] = []
-        gcmd=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''', '--', 'debian'] # >> $data 2>/dev/null'
         try:
             gitcom = subprocess.Popen(gcmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gitr)
         except OSError, err:
@@ -134,8 +143,8 @@ def get_git_commits(project):
             if len(stderrdata) != 0:
                 continue
             logging.warning('Git log returned no data in project %s package %s ... make sure we are on branch master' % (project, package))
-            gcmd=['git', 'log', 'master', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''', '--', 'debian'] # >> $data 2>/dev/null'
-            gitcom = subprocess.Popen(gcmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gitr)
+            gcmdm=['git', 'log', 'master', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''', '--', 'debian']
+            gitcom = subprocess.Popen(gcmdm, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gitr)
             (stdoutdata, stderrdata) = gitcom.communicate()
             if len(stderrdata) != 0:
                 logging.error('Problem when fetching Git commits of project %s package %s: %s' % (project, package, str(stderrdata).strip()))
@@ -145,8 +154,8 @@ def get_git_commits(project):
                     logging.warning('Git log returned no data in project %s package %s and %s should contain a package' % (project, package, gitr))
                     continue
                 logging.warning('Git log returned no data in project %s package %s ... do not restrict to debian/ dir only' % (project, package))
-                gcmd=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}'''] # >> $data 2>/dev/null'
-                gitcom = subprocess.Popen(gcmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gitr)
+                gcmda=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''']
+                gitcom = subprocess.Popen(gcmda, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=gitr)
                 (stdoutdata, stderrdata) = gitcom.communicate()
                 if len(stderrdata) != 0:
                     logging.error('Problem when fetching Git commits of project %s package %s: %s' % (project, package, str(stderrdata).strip()))
