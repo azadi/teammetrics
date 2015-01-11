@@ -241,6 +241,11 @@ def parse_and_save(mbox_files, nntp=False):
                 logging.error("No proper formatting for 'Name' found in %s" % msg_id)
                 continue
 
+            if name.startswith(("'", '"')) and name.endswith(("'", '"')):
+                print "DEBUG: name =", name , " --> " ,
+                name = name.strip("'").strip('"')
+                print name
+
             # Resolve the encodings but don't skip the message yet; let it
             # go through the SPAM checker.
             try:
