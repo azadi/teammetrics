@@ -28,7 +28,10 @@ teams = {
           'pkg-exppsy':        'team@neuro.debian.net'                             ,
           'pkg-ruby':          'pkg-ruby-extras-maintainers@lists.alioth.debian.org',
           'python-modules':    'python-modules-team@lists.alioth.debian.org'       ,
-#          'debian-python':     'debian-python@lists.debian.org'                    , # that's only one person
+          'pkg-libvirt':       'pkg-libvirt-maintainers@lists.alioth.debian.org'   ,
+          'debian-tex':        'debian-tex-maint@lists.debian.org'                 ,
+          'debian-php':        'pkg-php-maint@lists.alioth.debian.org'             ,
+          'debian-xfce':       'pkg-xfce-devel@lists.alioth.debian.org'            ,
         }
 
 #teams = {
