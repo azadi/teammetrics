@@ -1,10 +1,5 @@
 #!/usr/bin/python
 
-### Fetch affected package via
-###   svn log --verbose -r 100:110 svn://localhost/svn/debian-med
-### and extract the package from '^\s[DAM] /.*/packages/([^/]+)/.*', '\\1'
-### since more than one package might be affected find out one package which is mentioned the most time
-
 ### Regarding performance: JSON file storing commit IDs and just fetch newer commits
 
 import ast
@@ -32,6 +27,11 @@ CONF_FILE = 'commitinfo.conf'
 CONF_FILE_PATH = os.path.join(os.path.expanduser("~") + '/etc/teammetrics', CONF_FILE)
 
 svncommit_re = re.compile('^(r\d+)\s*\|\s*([^ ]+)\s*\|\s*([-0-9]+)\s.*')
+svnpackage_re0 = re.compile('^\s*[DAM]\s+.*/packages/([^/^ ]+)/(branch|tags|trunk).*')
+svnpackage_re1 = re.compile('^\s*[DAM]\s+.*/([^/]+/[^/]+/[^/]+)/debian[:/].*')
+svnpackage_re2 = re.compile('^\s*[DAM]\s+.*/([^/]+/[^/]+)/debian/.*') # Debichem is using a different layout
+svnpackage_re3 = re.compile('^\s*[DAM]\s+.*/packages/([^/]+/[bt][ar][agu][ns][^/]*)/debian.*')
+svnpackage_re_lastchance = re.compile('^[^/]+/([^/]+)$')
 gitcommit_re = re.compile('^{"commit_id":"(.+)", "name":"(.*)", "e-mail":"(.*)", "commit_date":"([-0-9]+)"}$')
 gitcheckduplicate_re = re.compile('^.*/(\w+).git/(\w+).git$')
 
@@ -193,26 +193,91 @@ def get_git_commits(project):
 def get_svn_commits(project):
     data=[]
     # option -r 1:HEAD does some pre-sorting
-    scmd='svn log -r 1:HEAD svn://localhost/svn/'+project+' 2> /dev/null'
+    scmd='svn log --verbose -r 1:HEAD svn://localhost/svn/'+project+' 2> /dev/null'
     # here we use os.popen since subprocess.Popen() does not seem to end :-(
     svnout = os.popen(scmd)
     ids=[]
+    found_pkg=-1
     for com in svnout.readlines():
         com = com.strip()
         if com == '':
             continue
         m = svncommit_re.match(com)
-        if not m:
-            continue
-        if m.group(1) in ids:
-            logging.info("Ignore duplicated commit in project %s: %s" % (project, com))
-            continue
-        ids.append(m.group(1))
-        commit = {}
-        commit['commit_id']   = m.group(1)
-        commit['name']        = m.group(2)
-        commit['commit_date'] = m.group(3)
-        data.append(commit)
+        if m:
+            if m.group(1) in ids:
+                logging.info("Ignore duplicated commit in project %s: %s" % (project, com))
+                continue
+            ids.append(m.group(1))
+            if found_pkg == 0:
+                logging.warning("No package found for commit_id %s in project %s" % (commit['commit_id'], project))
+                data.append(commit)
+            commit = {}
+            commit['commit_id']   = m.group(1)
+            commit['name']        = m.group(2)
+            commit['commit_date'] = m.group(3)
+            found_pkg=0
+        else:
+            if found_pkg > 0: # FIXME: we simply take the first package that was mentioned.
+                              #  Note that in SVN more than one package can be changed per commit
+                continue
+            p = svnpackage_re0.match(com)
+            if not p:
+                p = svnpackage_re1.match(com)
+                if not p:
+                    p = svnpackage_re2.match(com)
+                    if not p:
+                        p = svnpackage_re3.match(com)
+                        if not p:
+                            continue
+            found_pkg += 1
+            px=p.group(1)
+            if px.find('/') == -1:
+                pkg=px
+            elif px.endswith('/trunk'):
+                pkg=re.sub('.*/([^/]+)/trunk', '\\1', px)
+                pkg=re.sub('^([^/]+)/trunk', '\\1', pkg)
+            elif px.find('/branches') != -1:
+                pkg=re.sub('^([^/]+)/branches/.*', '\\1', px)
+                pkg=re.sub('^([^/]+)/branches', '\\1', pkg)
+            elif px.find('/branch') != -1:
+                pkg=re.sub('^([^/]+)/branch.*', '\\1', px)
+                pkg=re.sub('.*/([^/]+)/branch.*', '\\1', pkg)
+            elif px.find('/tags') != -1:
+                pkg=re.sub('.*/([^/]+)/tags', '\\1', px)
+                pkg=re.sub('^([^/]+)/tags.*', '\\1', pkg)
+            elif px.find('tags/') != -1:
+                pkg=re.sub('.*tags/([^/]+)/.*', '\\1', px)
+            elif px.find('/trunk') != -1:
+                pkg=re.sub('.*/([^/]+)/trunk', '\\1', px)
+                pkg=re.sub('^([^/]+)/trunk.*', '\\1', pkg)
+            elif px.find('packages/') != -1:
+                pkg=re.sub('.*packages/([^/]+).*', '\\1', px)
+            elif px.find('experimental/') != -1:
+                pkg=re.sub('^.*experimental/([^/]+)', '\\1', px)
+            elif px.find('unstable/') != -1:
+                pkg=re.sub('^.*unstable/([^/]+)', '\\1', px)
+            elif px.find('wnpp/') != -1:
+                pkg=re.sub('^.*wnpp/([^/]+)', '\\1', px)
+            elif px.startswith('ubuntu/'):
+                pkg=re.sub('^ubuntu/[^/]+/([^/]+)$', '\\1', px)
+                pkg=re.sub('^ubuntu/([^/]+)$', '\\1', pkg)
+            else:
+                # if a string repeats twice we guess it might be the package name
+                py=re.sub('^([^/]+)/.*', '\\1', px)
+                if px.startswith('%s/%s' % (py, py)):
+                    pkg=py
+                else:
+                    q = svnpackage_re_lastchance.match(px)
+                    if not q:
+                        logging.warning("No idea how to parse %s in commit %s" % (px, commit['commit_id']))
+                    else:
+                        pkg=q.group(1)
+                pkg = ''
+            if pkg.find('/') != -1:
+                logging.warning("Slash remains in package name %s (com='%s', px='%s', id='%s')" % (pkg, com, px, commit['commit_id']))
+            commit['package'] = pkg
+            # print commit
+            data.append(commit)
     return data
 
 if __name__ == '__main__':
