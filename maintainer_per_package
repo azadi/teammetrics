@@ -1,0 +1,37 @@
+#!/bin/sh -e
+ignoreprojects="('blends', 'd-i', 'debconf-video', 'debian-cd', 'debian-l10n', 'debtags', 'hurd', 'kernel', 'nm', 'pet', 'perl', 'teammetrics')"
+# Remarks: Blends needs to be further thinking
+#          'perl' (!= 'pkg-perl') is somehow strange and should not be calculated
+
+OUTPUTFORMAT=png
+if [ "$1" = "pdf" ] ; then
+    OUTPUTFORMAT=pdf
+fi
+
+TEXTCOLOR=${TEXTCOLOR:-"black"}
+if [ "$2" != "" ] ; then
+    TEXTCOLOR=$2
+fi
+
+projects=`psql -t teammetrics -c "SELECT project FROM commitstat WHERE vcs = 'git' AND project not in $ignoreprojects GROUP BY project ;"`
+for proj in $projects ; do
+    NAME=maintainer_per_package_${proj}
+    DATFILE=${NAME}.txt
+    echo "maintainers	packages" > $DATFILE
+    psql -t teammetrics -c "SELECT maintainernumber||'<tab>'||count FROM package_maintenance_numbers('$proj', 1) AS (maintainernumber int, count int);" | sed 's/<tab>/\t/g' >> $DATFILE
+
+R --no-save >/dev/null <<EOT
+dmstats <- read.table(file='$DATFILE', sep = '\t', fill=TRUE, header=TRUE )
+textcolor="$TEXTCOLOR"
+if ( "$OUTPUTFORMAT" == "pdf" ) pdf("${NAME}.pdf", fg=textcolor, width=9, height=7) else png("${NAME}.png", width = 800, height = 600)
+
+par(col.axis=textcolor,col.main=textcolor)
+plotcolors <- c("blue")
+barplot(dmstats\$packages, names.arg=dmstats\$maintainers, beside=TRUE,col=c("blue"),
+        main = "Number of maintainers working on a package in $proj team")
+
+dev.off()
+EOT
+
+done
+
