@@ -5,6 +5,8 @@
 ### and extract the package from '^\s[DAM] /.*/packages/([^/]+)/.*', '\\1'
 ### since more than one package might be affected find out one package which is mentioned the most time
 
+### Regarding performance: JSON file storing commit IDs and just fetch newer commits
+
 import ast
 import logging
 import json
