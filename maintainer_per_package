@@ -1,5 +1,5 @@
 #!/bin/sh -e
-ignoreprojects="('blends', 'd-i', 'debconf-video', 'debian-cd', 'debian-l10n', 'debtags', 'hurd', 'kernel', 'nm', 'pet', 'perl', 'teammetrics')"
+ignoreprojects="('blends', 'd-i', 'debconf-video', 'debian-cd', 'debian-l10n', 'debtags', 'kernel', 'nm', 'pet', 'perl', 'pkg-hurd', 'teammetrics')"
 # Remarks: Blends needs to be further thinking
 #          'perl' (!= 'pkg-perl') is somehow strange and should not be calculated
 
