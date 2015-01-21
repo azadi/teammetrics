@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+### Fetch affected package via
+###   svn log --verbose -r 100:110 svn://localhost/svn/debian-med
+### and extract the package from '^\s[DAM] /.*/packages/([^/]+)/.*', '\\1'
+### since more than one package might be affected find out one package which is mentioned the most time
+
 import ast
 import logging
 import json
