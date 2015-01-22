@@ -1,5 +1,6 @@
 Aaron M. Ucko                   :           ucko, Aaron Ucko
 Achim Bohnet                    :           ach-guest
+Achim D. Brucker                :           brucker
 Adam C Powell IV                :           hazelsct
 Adam Conrad                     :           adconrad
 Adeodato Simó                   :           adeodato, dato-guest
@@ -11,7 +12,7 @@ Adrian von Bidder               :           Adrian % von Bidder
 Ahmed El-Mahmoudy               :           %Ahmed El-Mahmoudy%, aelmahmoudy-guest
 Alan Boudreault                 :           aboudreault-guest
 Alastair McKinstry              :           mckinstry
-Albert Huang                    :           ashuang-guest
+Albert Huang                    :           ashuang-guest, ash
 Alberto Fernández               :           Alberto Fernandez
 Alberto Garcia                  :           agarcia-guest
 Ales Zabala Alava               :           shagi-guest
@@ -49,6 +50,7 @@ Andres Mejia                    :           ceros-guest
 Andres Salomon                  :           dilinger, dilinger-guest
 Andrew Gee                      :           andrewgee-guest
 Andrew Lee                      :           ajqlee
+Andrew Miller                   :           a1kmm-guest
 Andrew Price                    :           andyp-guest
 Andrew Ross                     :           rockclimb-guest
 Andrew Starr-Bochicchio         :           andrewsomething-guest
@@ -72,6 +74,7 @@ Armin Berres                    :           trigger-guest
 Armin Ronacher                  :           mitsuhiko-guest
 Arnaud Fontaine                 :           arnau, arnau-guest
 Arnaud Patard                   :           rtp-guest
+Aron Xu                         :           aron
 Arnaud Vandyck                  :           avdyk, arnaud-guest
 Aurélien COUDERC                :           coucouf-guest
 Aurelien Jarno                  :           aurel32
@@ -147,6 +150,7 @@ Cosimo Alfarano                 :           kalfa
 Craig Small                     :           csmall
 Cécile FORELLA                  :           forella-guest
 Cédric Boutillier               :           boutil, boutil-guest
+D Haley                         :           builder, eeeuser, D
 D. Moonfire                     :           dmoonfire-guest
 Damien Caliste                  :           dcaliste-guest
 Damien Raude-Morvan             :           drazzib
@@ -252,7 +256,7 @@ Francesca Ciceri                :           madamezou, madamezou-guest
 Francesco P. Lovergine          :           Francesco%Lovergine, frankie, frankie@haydn.debian.org
 Francois Marier                 :           francois
 Frank Küster                    :           frank
-Frank S. Thomas                 :           fst, fst-guest
+Frank S. Thomas                 :           fst, fst-guest, mrfrost
 Frans Pop                       :           fjp
 Frederic Lehobey                :           fdl-guest, Frederic Daniel Luc Lehobey
 Frederik Schüler                :           fs, fschueler-guest
@@ -269,6 +273,7 @@ Georges Khaznadar               :           georgesk
 Gerardo Curiel                  :           gerardo-guest
 Gerfried Fuchs                  :           rhonda, alfie, rhonda-guest
 Gert Wollny                     :           gert-guest
+Gilles Filippini                :           pini
 Giovanni Mascellani             :           gio, gmascellani-guest
 Giuliano Bordonaro              :           italia1bpf-guest
 Gonéri Le Bouder                :           Gon%ri Le Bouder, goneri%
@@ -406,14 +411,16 @@ Kevin Rosenberg                 :           kevinrosenberg
 Ko van der Sloot                :           sloot-guest
 Konstantinos Poulios            :           logari81-guest
 Krzysztof Krzyzaniak            :           eloy
-Kumar Appaiah                   :           kumanna-guest
+Kumar Appaiah                   :           kumanna-guest, akumar
 Kurt Roeckx                     :           %Kurt Roeckx%
 Kyle McMartin                   :           kyle
 Kåre Thor Olsen                 :           kaare
 L. V. Gandhi                    :           L . V . Gandhi, L.V.Gandhi
 LI Daobing                      :           lidaobing-guest
 Laszlo Kajan                    :           lkajan-guest, lkajan
+Leo Singer                      :           lsinger-guest
 Leonardo Marín                  :           ljmarin-guest
+Leopold Palomo-Avellaneda       :           Leopold Palomo%
 Lifeng Sun                      :           lifengsun-guest
 Linas Zvirblis                  :           Linas %virblis, linas-guest
 Lisandro Damián Nicanor Pérez Meyer:        lisandropm-guest, Lisandro%rez Meyer
@@ -627,6 +634,7 @@ Sameer Rahmani                  :           lxsameer-guest
 Samuel Garcia                   :           Samuel GARCIA
 Samuel Mimram                   :           smimram, smimram-guest
 Samuel Thibault                 :           sthibaul-guest, sthibault
+Sanjaya Ratnaweera              :           pini-guest
 Sandro Tosi                     :           morph
 Santiago Garcia Mantinan        :           manty
 Sargis Dallakyan                :           sargis, sargis-guest
@@ -641,6 +649,7 @@ Sébastien Boisvert              :           S%bastien Boisvert
 Sebastien Jodogne               :           jodogne-guest
 Seo Sanghyeon                   :           sanxiyn-guest
 Serge Guelton                   :           guelton-guest
+Sergey Kirpichev                :           sk-guest
 Sergio Talens-Oliag             :           sto
 Severin Heiniger                :           lantash-guest
 Shen Wei                        :           uheeschen-guest
@@ -692,7 +701,7 @@ Tatiana Al-Chueyr               :           tatiana_alchueyr-guest
 Ted Percival                    :           tedp-guest
 Thaddeus H. Black               :           thb-guest
 Thibaut Gridel                  :           tgridel-guest
-Thibaut Paumard                 :           thibaut-guest
+Thibaut Paumard                 :           thibaut-guest, paumard
 Thiemo Seufer                   :           ths-guest
 Thierry Carrez                  :           ttx-guest
 Thijs Kinkhorst                 :           thijs, kink-guest
