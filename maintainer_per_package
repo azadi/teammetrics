@@ -18,7 +18,7 @@ for proj in $projects ; do
     NAME=maintainer_per_package_${proj}
     DATFILE=${NAME}.txt
     echo "maintainers	packages" > $DATFILE
-    psql -t teammetrics -c "SELECT maintainernumber||'<tab>'||count FROM package_maintenance_numbers('$proj', 1) AS (maintainernumber int, count int);" | sed 's/<tab>/\t/g' >> $DATFILE
+    psql -t teammetrics -c "SELECT maintainernumber||'<tab>'||count FROM package_maintenance_numbers('$proj', 4, 1) AS (maintainernumber int, count int);" | sed 's/<tab>/\t/g' >> $DATFILE
 
 R --no-save >/dev/null <<EOT
 dmstats <- read.table(file='$DATFILE', sep = '\t', fill=TRUE, header=TRUE )
