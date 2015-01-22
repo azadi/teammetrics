@@ -22,4 +22,14 @@ $$ LANGUAGE SQL;
 -- SELECT * FROM package_maintenance_numbers('debian-med', 4, 1) AS (maintainernumber int, count int);
 -- SELECT * FROM package_maintenance_numbers('debian-science', 4, 1) AS (maintainernumber int, count int);
 
+-- maintainer name as argument displays the package he has contributed to and all other people who contributed
+CREATE OR REPLACE FUNCTION check_maintainer_contribution(text) RETURNS SETOF RECORD AS $$
+    SELECT project, pn.package, name, CAST(count as int) FROM
+       (SELECT project, package, name, count(*) as count FROM commitstat WHERE package != '' GROUP BY project, package, name) AS pn
+       JOIN (SELECT DISTINCT package FROM commitstat WHERE package != '' AND name = $1) n ON pn.package = n.package
+       ORDER BY project, package, count DESC, name
+$$ LANGUAGE SQL;
+
+-- SELECT * FROM check_maintainer_contribution('Mathieu Malaterre') AS (project text, package text, name text, ncommit int) ;
+
 -- COMMIT;
