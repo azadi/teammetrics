@@ -17,7 +17,7 @@ CREATE OR REPLACE FUNCTION package_maintenance_numbers(text, int) RETURNS SETOF 
     SELECT maintainernumber, CAST(count(*) AS int) FROM maintainer_per_package($1, $2) AS (package text, maintainernumber int) GROUP BY maintainernumber ORDER BY maintainernumber
 $$ LANGUAGE SQL;
 
-SELECT * FROM package_maintenance_numbers('debian-med', 1) AS (maintainernumber int, count int);
-SELECT * FROM package_maintenance_numbers('debian-science', 1) AS (maintainernumber int, count int);
+-- SELECT * FROM package_maintenance_numbers('debian-med', 1) AS (maintainernumber int, count int);
+-- SELECT * FROM package_maintenance_numbers('debian-science', 1) AS (maintainernumber int, count int);
 
 -- COMMIT;
