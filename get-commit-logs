@@ -15,7 +15,8 @@ webdir='/srv/alioth.debian.org/chroot/home/groups/teammetrics/htdocs/commitstats
 outputfile=webdir+'/commits.json'
 
 # FIXME: Should be solved with config file
-NATIVEPROJECTS=['d-i', 'blends']
+NATIVEPROJECTS=['d-i', 'blends', 'fai', 'debtags' ]
+NOPACKAGE=['d-i', 'debian-cd', 'debconf-video', 'debtags', 'fai', 'kernel']
 pkggcmd=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''', '--', 'debian']
 nativgcmd=['git', 'log', '--no-merges', '--date=short', '--pretty=format:''{"commit_id":"%H", "name":"%an", "e-mail":"%ae", "commit_date":"%ad"}''']
 
@@ -27,11 +28,18 @@ CONF_FILE = 'commitinfo.conf'
 CONF_FILE_PATH = os.path.join(os.path.expanduser("~") + '/etc/teammetrics', CONF_FILE)
 
 svncommit_re = re.compile('^(r\d+)\s*\|\s*([^ ]+)\s*\|\s*([-0-9]+)\s.*')
+svnpackage_re_initial = re.compile('^ini.*')
 svnpackage_re0 = re.compile('^\s*[DAM]\s+.*/packages/([^/^ ]+)/(branch|tags|trunk).*')
-svnpackage_re1 = re.compile('^\s*[DAM]\s+.*/([^/]+/[^/]+/[^/]+)/debian[:/].*')
-svnpackage_re2 = re.compile('^\s*[DAM]\s+.*/([^/]+/[^/]+)/debian/.*') # Debichem is using a different layout
-svnpackage_re3 = re.compile('^\s*[DAM]\s+.*/packages/([^/]+/[bt][ar][agu][ns][^/]*)/debian.*')
+svnpackage_re1 = re.compile('^\s*[DAM]\s+.*/packages.*/([^/^ ]+)/(branch|tags|trunk).*')
+svnpackage_re2 = re.compile('^\s*[DAM]\s+.*/([^/^ ]+/[^/^ ]+/[^/^ ]+)/debian[:/].*')
+svnpackage_re3 = re.compile('^\s*[DAM]\s+.*/([^/^ ]+/[^/^ ]+)/debian[:/].*')
+svnpackage_re4 = re.compile('^\s*[DAM]\s+.*/([^/]+/[^/]+)/debian/.*') # Debichem is using a different layout
+svnpackage_re5 = re.compile('^\s*[DAM]\s+.*/packages/([^/]+/[bt][ar][agu][ns][^/]*)/debian.*')
+svnpackage_re6 = re.compile('^\s*[DAM]\s+.*/tags/([^/^ ]+)/.*')
+svnpackage_re7 = re.compile('^\s*[DAM]\s+/([^/^ ]+)/tags/.*/([^/^ ]+)/trunk.*')
+svnpackage_re8 = re.compile('^\s*[DAM]\s+/branches.*/([^/^ ]+).*/trunk/([^/^ ]+)[:/].*')
 svnpackage_re_lastchance = re.compile('^[^/]+/([^/]+)$')
+svnpackage_re_lastchance2 = re.compile('^([^/^ ]+)/.+/([^/^ ]+)$')
 gitcommit_re = re.compile('^{"commit_id":"(.+)", "name":"(.*)", "e-mail":"(.*)", "commit_date":"([-0-9]+)"}$')
 gitcheckduplicate_re = re.compile('^.*/(\w+).git/(\w+).git$')
 
@@ -202,6 +210,16 @@ def get_svn_commits(project):
         com = com.strip()
         if com == '':
             continue
+        p = svnpackage_re_initial.match(com.lower()) # if string starts with "initial" we can ignore this
+	if p or com.startswith('-----------------------'): # make sure we really trigger the write
+	    try:
+	        if not commit.has_key('package'):
+                    commit['package'] = ''
+                    # print commit
+            except UnboundLocalError: # First log line is also '^------'
+                continue
+            found_pkg=1
+            continue
         m = svncommit_re.match(com)
         if m:
             if m.group(1) in ids:
@@ -215,10 +233,15 @@ def get_svn_commits(project):
             commit['commit_id']   = m.group(1)
             commit['name']        = m.group(2)
             commit['commit_date'] = m.group(3)
+            commit['package']     = ''
             found_pkg=0
         else:
             if found_pkg > 0: # FIXME: we simply take the first package that was mentioned.
                               #  Note that in SVN more than one package can be changed per commit
+                continue
+            if project in NOPACKAGE:
+                continue
+            if com.find('/') == -1:	# there must be at least one '/' in the string to detect a package
                 continue
             p = svnpackage_re0.match(com)
             if not p:
@@ -228,7 +251,25 @@ def get_svn_commits(project):
                     if not p:
                         p = svnpackage_re3.match(com)
                         if not p:
-                            continue
+                            p = svnpackage_re4.match(com)
+                            if not p:
+                                p = svnpackage_re5.match(com)
+                                if not p:
+                                    p = svnpackage_re6.match(com)
+                                    if not p:
+                                        p = svnpackage_re7.match(com)
+                                        if not p:
+                                            p = svnpackage_re8.match(com)
+                                            if not p:
+                                                continue
+                                            if p.group(1) != p.group(2):
+                                                logging.warning("branches and trunk found but different package strings %s != %s (com='%s', id='%s')" % (p.group(1), p.group(2), com, commit['commit_id']))
+                                                continue
+                                        else:
+                                            if p.group(1) != p.group(2):
+                                                logging.warning("tag and trunk found but different package strings %s != %s (com='%s', id='%s')" % (p.group(1), p.group(2), com, commit['commit_id']))
+                                                continue
+
             found_pkg += 1
             px=p.group(1)
             if px.find('/') == -1:
@@ -242,9 +283,10 @@ def get_svn_commits(project):
             elif px.find('/branch') != -1:
                 pkg=re.sub('^([^/]+)/branch.*', '\\1', px)
                 pkg=re.sub('.*/([^/]+)/branch.*', '\\1', pkg)
-            elif px.find('/tags') != -1:
+            elif px.endswith('/tags'):
                 pkg=re.sub('.*/([^/]+)/tags', '\\1', px)
-                pkg=re.sub('^([^/]+)/tags.*', '\\1', pkg)
+            elif px.find('/tags/') != -1:
+                pkg=re.sub('^([^/]+)/tags.*', '\\1', px)
             elif px.find('tags/') != -1:
                 pkg=re.sub('.*tags/([^/]+)/.*', '\\1', px)
             elif px.find('/trunk') != -1:
@@ -258,6 +300,13 @@ def get_svn_commits(project):
                 pkg=re.sub('^.*unstable/([^/]+)', '\\1', px)
             elif px.find('wnpp/') != -1:
                 pkg=re.sub('^.*wnpp/([^/]+)', '\\1', px)
+            elif px.find('non-free/') != -1:
+                pkg=re.sub('^.*non-free/([^/]+)', '\\1', px)
+            elif px.find('lenny/') != -1:
+                pkg=re.sub('^.*lenny/([^/]+)', '\\1', px)
+            elif px.find('trunk/') != -1:
+                pkg=re.sub('.*trunk/([^/]+)/.*', '\\1', px)
+                pkg=re.sub('.*trunk/([^/]+)', '\\1', pkg)
             elif px.startswith('ubuntu/'):
                 pkg=re.sub('^ubuntu/[^/]+/([^/]+)$', '\\1', px)
                 pkg=re.sub('^ubuntu/([^/]+)$', '\\1', pkg)
@@ -269,12 +318,22 @@ def get_svn_commits(project):
                 else:
                     q = svnpackage_re_lastchance.match(px)
                     if not q:
-                        logging.warning("No idea how to parse %s in commit %s" % (px, commit['commit_id']))
+                        q = svnpackage_re_lastchance2.match(p.group(1))
+                        if not q:
+                            logging.warning("No idea how to parse %s in commit %s" % (px, commit['commit_id']))
+                            pkg = ''
+                        else:
+                            if q.group(1) == q.group(2):
+                                pkg=q.group(1)
+                            else:
+                                logging.warning("Strings are not equal in %s (%s!=%s) in commit %s" % (px, q.group(1), q.group(2), commit['commit_id']))
+                                pkg = ''
                     else:
                         pkg=q.group(1)
-                pkg = ''
             if pkg.find('/') != -1:
                 logging.warning("Slash remains in package name %s (com='%s', px='%s', id='%s')" % (pkg, com, px, commit['commit_id']))
+            if pkg.startswith('REL'):
+                logging.error("Something is wrong in project %s package name %s (com='%s', px='%s', id='%s')" % (project, pkg, com, px, commit['commit_id']))
             commit['package'] = pkg
             # print commit
             data.append(commit)
