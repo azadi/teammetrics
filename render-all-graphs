@@ -37,6 +37,9 @@ if [ "$1" = "pdf" ] ; then
     PDF="pdf"
 fi
 
+# render maintainer contribution per package
+maintainer_per_package
+
 # Render uploaders history
 upload_history.py $PDF
 
