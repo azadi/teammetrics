@@ -70,7 +70,7 @@ if __name__ == '__main__':
 
     query = """PREPARE svn_insert
       AS INSERT INTO commitstat (commit_id, project, package, vcs, name, commit_date)
-      VALUES ($1, $2, '',  'svn', $3, $4)"""
+      VALUES ($1, $2, $3,  'svn', $4, $5)"""
     try:
         cur.execute(query)
     except psycopg2.ProgrammingError, err:
@@ -82,12 +82,14 @@ if __name__ == '__main__':
       VALUES ($1, $2, $3, 'git', $4, $5)"""
     cur.execute(query)
 
-    svnquery = "EXECUTE svn_insert (%(commit_id)s, %(project)s, %(name)s, %(commit_date)s)"
+    svnquery = "EXECUTE svn_insert (%(commit_id)s, %(project)s, %(package)s, %(name)s, %(commit_date)s)"
     gitquery = "EXECUTE git_insert (%(commit_id)s, %(project)s, %(package)s, %(name)s, %(commit_date)s)"
     for prj in data:
         if prj.has_key('svn'):
             for com in prj['svn']:
                 com['project'] = prj['project']
+                if not com.has_key('package'):
+                    com['package'] = ''
                 cur.execute(svnquery, com)
         if prj.has_key('git'):
             for commits in prj['git']:
