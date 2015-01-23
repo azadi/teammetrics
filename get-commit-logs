@@ -38,8 +38,9 @@ svnpackage_re5 = re.compile('^\s*[DAM]\s+.*/packages/([^/]+/[bt][ar][agu][ns][^/
 svnpackage_re6 = re.compile('^\s*[DAM]\s+.*/tags/([^/^ ]+)/.*')
 svnpackage_re7 = re.compile('^\s*[DAM]\s+/([^/^ ]+)/tags/.*/([^/^ ]+)/trunk.*')
 svnpackage_re8 = re.compile('^\s*[DAM]\s+/branches.*/([^/^ ]+).*/trunk/([^/^ ]+)[:/].*')
-svnpackage_re_lastchance = re.compile('^[^/]+/([^/]+)$')
+svnpackage_re_lastchance  = re.compile('^[^/]+/([^/]+)$')
 svnpackage_re_lastchance2 = re.compile('^([^/^ ]+)/.+/([^/^ ]+)$')
+svnpackage_re_release     = re.compile('^\s*[DAM]\s+/tags/RELEASE[^/]+/([0-9a-z][^/^ ]+)')
 gitcommit_re = re.compile('^{"commit_id":"(.+)", "name":"(.*)", "e-mail":"(.*)", "commit_date":"([-0-9]+)"}$')
 gitcheckduplicate_re = re.compile('^.*/(\w+).git/(\w+).git$')
 
@@ -201,34 +202,35 @@ def get_git_commits(project):
 def get_svn_commits(project):
     data=[]
     # option -r 1:HEAD does some pre-sorting
-    scmd='svn log --verbose -r 1:HEAD svn://localhost/svn/'+project+' 2> /dev/null'
+    scmd='LC_ALL=C svn log --verbose -r 1:HEAD svn://localhost/svn/'+project+' 2> /dev/null'
     # here we use os.popen since subprocess.Popen() does not seem to end :-(
     svnout = os.popen(scmd)
     ids=[]
     found_pkg=-1
     for com in svnout.readlines():
         com = com.strip()
-        if com == '':
-            continue
-        p = svnpackage_re_initial.match(com.lower()) # if string starts with "initial" we can ignore this
-	if p or com.startswith('-----------------------'): # make sure we really trigger the write
+	if com.startswith('-----------------------'): # make sure we really trigger the write
 	    try:
 	        if not commit.has_key('package'):
                     commit['package'] = ''
-                    # print commit
             except UnboundLocalError: # First log line is also '^------'
+                print "%s: Ignore very first line of dashes. (%i)" % (project, found_pkg)
                 continue
-            found_pkg=1
+            # print commit
+            data.append(commit)
+            ids.append(commit['commit_id'])
             continue
+        if com == '':
+            continue
+        com = re.sub('^(r\d+\s*\|\s+)\(no author\)(\s+\|\s*[-0-9].*)', '\\1?\\2', com) # some commits are from "(no author)"
         m = svncommit_re.match(com)
         if m:
             if m.group(1) in ids:
                 logging.info("Ignore duplicated commit in project %s: %s" % (project, com))
                 continue
-            ids.append(m.group(1))
             if found_pkg == 0:
-                logging.warning("No package found for commit_id %s in project %s" % (commit['commit_id'], project))
-                data.append(commit)
+                if not project in NOPACKAGE:
+                    logging.warning("No package found for commit_id %s in project %s" % (commit['commit_id'], project))
             commit = {}
             commit['commit_id']   = m.group(1)
             commit['name']        = m.group(2)
@@ -270,7 +272,6 @@ def get_svn_commits(project):
                                                 logging.warning("tag and trunk found but different package strings %s != %s (com='%s', id='%s')" % (p.group(1), p.group(2), com, commit['commit_id']))
                                                 continue
 
-            found_pkg += 1
             px=p.group(1)
             if px.find('/') == -1:
                 pkg=px
@@ -333,10 +334,14 @@ def get_svn_commits(project):
             if pkg.find('/') != -1:
                 logging.warning("Slash remains in package name %s (com='%s', px='%s', id='%s')" % (pkg, com, px, commit['commit_id']))
             if pkg.startswith('REL'):
-                logging.error("Something is wrong in project %s package name %s (com='%s', px='%s', id='%s')" % (project, pkg, com, px, commit['commit_id']))
+                q = svnpackage_re_release.match(com)
+                if not q:
+                    logging.error("Something is wrong in project %s package name %s (com='%s', px='%s', id='%s')" % (project, pkg, com, px, commit['commit_id']))
+                    continue
+                else:
+                    pkg=q.group(1)
             commit['package'] = pkg
-            # print commit
-            data.append(commit)
+            found_pkg += 1
     return data
 
 if __name__ == '__main__':
