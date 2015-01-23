@@ -38,6 +38,7 @@ svnpackage_re5 = re.compile('^\s*[DAM]\s+.*/packages/([^/]+/[bt][ar][agu][ns][^/
 svnpackage_re6 = re.compile('^\s*[DAM]\s+.*/tags/([^/^ ]+)/.*')
 svnpackage_re7 = re.compile('^\s*[DAM]\s+/([^/^ ]+)/tags/.*/([^/^ ]+)/trunk.*')
 svnpackage_re8 = re.compile('^\s*[DAM]\s+/branches.*/([^/^ ]+).*/trunk/([^/^ ]+)[:/].*')
+svnpackage_re_trybranch  = re.compile('^branches/([^/]+)/(wheezy|squeeze|\d+\.|convert|feature).*')
 svnpackage_re_lastchance  = re.compile('^[^/]+/([^/]+)$')
 svnpackage_re_lastchance2 = re.compile('^([^/^ ]+)/.+/([^/^ ]+)$')
 svnpackage_re_release     = re.compile('^\s*[DAM]\s+/tags/RELEASE[^/]+/([0-9a-z][^/^ ]+)')
@@ -317,18 +318,22 @@ def get_svn_commits(project):
                 if px.startswith('%s/%s' % (py, py)):
                     pkg=py
                 else:
-                    q = svnpackage_re_lastchance.match(px)
+                    q = svnpackage_re_trybranch.match(px)
                     if not q:
-                        q = svnpackage_re_lastchance2.match(p.group(1))
+                        q = svnpackage_re_lastchance.match(px)
                         if not q:
-                            logging.warning("No idea how to parse %s in commit %s" % (px, commit['commit_id']))
-                            pkg = ''
-                        else:
-                            if q.group(1) == q.group(2):
-                                pkg=q.group(1)
-                            else:
-                                logging.warning("Strings are not equal in %s (%s!=%s) in commit %s" % (px, q.group(1), q.group(2), commit['commit_id']))
+                            q = svnpackage_re_lastchance2.match(p.group(1))
+                            if not q:
+                                logging.warning("No idea how to parse %s in commit %s" % (px, commit['commit_id']))
                                 pkg = ''
+                            else:
+                                if q.group(1) == q.group(2):
+                                    pkg=q.group(1)
+                                else:
+                                    logging.warning("Strings are not equal in %s (%s!=%s) in commit %s" % (px, q.group(1), q.group(2), commit['commit_id']))
+                                    pkg = ''
+                        else:
+                            pkg=q.group(1)
                     else:
                         pkg=q.group(1)
             if pkg.find('/') != -1:
