@@ -27,9 +27,15 @@ CREATE OR REPLACE FUNCTION check_maintainer_contribution(text) RETURNS SETOF REC
     SELECT project, pn.package, name, CAST(count as int) FROM
        (SELECT project, package, name, count(*) as count FROM commitstat WHERE package != '' GROUP BY project, package, name) AS pn
        JOIN (SELECT DISTINCT package FROM commitstat WHERE package != '' AND name = $1) n ON pn.package = n.package
-       ORDER BY project, package, count DESC, name
+       ORDER BY package, count DESC, project, name
 $$ LANGUAGE SQL;
 
 -- SELECT * FROM check_maintainer_contribution('Mathieu Malaterre') AS (project text, package text, name text, ncommit int) ;
+
+CREATE OR REPLACE FUNCTION check_maintainer_contribution_anonymized(text) RETURNS SETOF RECORD AS $$
+   SELECT project, package, CASE WHEN name=$1 THEN '-->'||CAST(ncommit AS text) ELSE CAST(ncommit AS text) END FROM check_maintainer_contribution($1) AS (project text, package text, name text, ncommit int)
+$$ LANGUAGE SQL;
+
+-- SELECT * FROM check_maintainer_contribution_anonymized('Mathieu Malaterre') AS (project text, package text, ncommit text) ;
 
 -- COMMIT;
