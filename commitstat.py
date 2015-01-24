@@ -84,13 +84,25 @@ if __name__ == '__main__':
 
     svnquery = "EXECUTE svn_insert (%(commit_id)s, %(project)s, %(package)s, %(name)s, %(commit_date)s)"
     gitquery = "EXECUTE git_insert (%(commit_id)s, %(project)s, %(package)s, %(name)s, %(commit_date)s)"
+    svnids={}
     for prj in data:
         if prj.has_key('svn'):
             for com in prj['svn']:
-                com['project'] = prj['project']
+                project=prj['project']
+                if not svnids.has_key(project):
+                    svnids[project] = []
+                if com['commit_id'] in svnids[project]:
+                    print "Dupplicated SVN id in project:%s, package:%s, id:%s" % (project, com['package'], com['commit_id'])
+                    continue
+                com['project'] = project
                 if not com.has_key('package'):
                     com['package'] = ''
-                cur.execute(svnquery, com)
+                try:
+                    cur.execute(svnquery, com)
+                except psycopg2.IntegrityError, err: # unfortunately this does not help to continue the transaction
+                    print "project:%s, package:%s" % (com['project'], com['package'])
+                    print err
+                svnids[project].append(com['commit_id'])
         if prj.has_key('git'):
             for commits in prj['git']:
                 for com in commits['commits']:
