@@ -83,17 +83,17 @@ SELECT * FROM author_per_year_of_list('soc-coordination', 12) AS (author text, y
 SELECT * FROM author_per_year_of_list('debian-med-packaging', 12) AS (author text, year int, value int) ;
  */
 
--- top N authors of commits to project
-CREATE OR REPLACE FUNCTION commit_names_of_project(text,int) RETURNS SETOF RECORD AS '
+-- top N authors of commits to project, the name should be different from '?'
+CREATE OR REPLACE FUNCTION commit_names_of_project(text,int) RETURNS SETOF RECORD AS \$\$
   SELECT name FROM (
     SELECT name, COUNT(*)::int
       FROM commitstat
-      WHERE project = \$1
+      WHERE project = \$1 AND name != '?'
       GROUP BY name
       ORDER BY count DESC
       LIMIT \$2
   ) tmp
-' LANGUAGE sql;
+\$\$ LANGUAGE sql;
 
 /*
 SELECT * FROM commit_names_of_project('teammetrics', 12) AS (category text) ;
