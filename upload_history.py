@@ -25,6 +25,7 @@ teams = {
           'pkg-java':          'pkg-java-maintainers@lists.alioth.debian.org'      ,
           'pkg-libvirt':       'pkg-libvirt-maintainers@lists.alioth.debian.org'   ,
           'pkg-multimedia':    'pkg-multimedia-maintainers@lists.alioth.debian.org',
+          'pkg-openstack':     'openstack-devel@lists.alioth.debian.org'           ,
           'pkg-osm':           'pkg-osm-maint@lists.alioth.debian.org'             ,
           'pkg-perl':          'pkg-perl-maintainers@lists.alioth.debian.org'      ,
           'pkg-phototools':    'pkg-phototools-devel@lists.alioth.debian.org'      ,
