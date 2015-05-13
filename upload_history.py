@@ -21,6 +21,7 @@ teams = {
           'pkg-common-lisp':   'pkg-common-lisp-devel@lists.alioth.debian.org'     ,
           'pkg-exppsy':        'team@neuro.debian.net'                             ,
           'pkg-games':         'pkg-games-devel@lists.alioth.debian.org'           ,
+          'pkg-hamradio':      'debian-hams@lists.debian.org'                      ,
           'pkg-haskell':       'pkg-haskell-maintainers@lists.alioth.debian.org'   ,
           'pkg-java':          'pkg-java-maintainers@lists.alioth.debian.org'      ,
           'pkg-libvirt':       'pkg-libvirt-maintainers@lists.alioth.debian.org'   ,
