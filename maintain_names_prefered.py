@@ -70,6 +70,7 @@ WHITELIST = (
              'Debian systemd Maintainers',
              'Debian TeX Maintainers',
              'Denis Rojo',
+             'Dimitri John Ledkov',
              'Erdal Ronahî',
              'Esteban Manchado Velázquez',
              'Eugeniy Meshcheryakov',
