@@ -48,6 +48,7 @@ WHITELIST = (
              'Bruno Kleinert',
              'Chao-Ming',
              'Christian M. Amsüss',
+             'Christopher Knadle',
              'Christine Caulfield',
              'Cleto Martin Angelina',
              'Dale E. Martin',
