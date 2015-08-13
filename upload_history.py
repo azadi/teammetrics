@@ -13,6 +13,7 @@ teams = {
           'debian-live':       'debian-live@lists.debian.org'                      , # that's no real team but one very active person
           'debian-med' :       'debian-med-packaging@lists.alioth.debian.org'      ,
           'debian-php':        'pkg-php-maint@lists.alioth.debian.org'             ,
+          'debian-qa':         'debian-qa@lists.debian.org'                        ,
           'debian-science':    'debian-science-maintainers@lists.alioth.debian.org',
           'debian-tex':        'debian-tex-maint@lists.debian.org'                 ,
           'debian-xfce':       'pkg-xfce-devel@lists.alioth.debian.org'            ,
