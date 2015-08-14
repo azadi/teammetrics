@@ -6,6 +6,7 @@ ignoreprojects="('blends', 'd-i', 'debconf-video', 'debian-cd', 'debian-l10n', '
 OUTPUTFORMAT=png
 if [ "$1" = "pdf" ] ; then
     OUTPUTFORMAT=pdf
+    TEXTCOLOR=${TEXTCOLOR:-"white"}
 fi
 
 TEXTCOLOR=${TEXTCOLOR:-"black"}
