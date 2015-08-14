@@ -6,9 +6,9 @@
 -- third is a limit which requires more commit per maintainer than this limit (to exclude a single contribution for instance)
 CREATE OR REPLACE FUNCTION maintainer_per_package(text, int, int) RETURNS SETOF RECORD AS $$
   SELECT panaco.package, CAST(count(*) AS int) FROM (
-      SELECT package, name, count(*) as namecount FROM commitstat WHERE project=$1 AND package not in ('', 'meta', 'website') GROUP BY package, name
+      SELECT package, name, count(*) as namecount FROM commitstat WHERE project=$1 AND package not in ('', 'meta', 'tasksel', 'website') GROUP BY package, name
      ) panaco
-    JOIN (SELECT * FROM (SELECT package, count(*) as pkgcount FROM commitstat WHERE project=$1 AND package not in ('', 'meta', 'website') GROUP BY package) paco WHERE pkgcount > $2 ) l ON panaco.package = l.package
+    JOIN (SELECT * FROM (SELECT package, count(*) as pkgcount FROM commitstat WHERE project=$1 AND package not in ('', 'meta', 'tasksel', 'website') GROUP BY package) paco WHERE pkgcount > $2 ) l ON panaco.package = l.package
     WHERE namecount > $3 GROUP BY panaco.package
 $$ LANGUAGE SQL;
 
