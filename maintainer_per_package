@@ -31,7 +31,7 @@ if ( "$OUTPUTFORMAT" == "pdf" ) pdf("${NAME}.pdf", fg=textcolor, width=9, height
 
 par(col.axis=textcolor,col.main=textcolor)
 plotcolors <- c("${BARCOLOR}")
-barplot(dmstats\$packages, names.arg=dmstats\$maintainers, beside=TRUE,col=c("blue"),
+barplot(dmstats\$packages, names.arg=dmstats\$maintainers, beside=TRUE,col=c("${BARCOLOR}"),
         main = "Number of maintainers working on a package in $proj team")
 
 dev.off()
