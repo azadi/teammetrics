@@ -7,12 +7,15 @@ OUTPUTFORMAT=png
 if [ "$1" = "pdf" ] ; then
     OUTPUTFORMAT=pdf
     TEXTCOLOR=${TEXTCOLOR:-"white"}
+    BARCOLOR=${BARCOLOR:-"green"}
 fi
 
 TEXTCOLOR=${TEXTCOLOR:-"black"}
 if [ "$2" != "" ] ; then
     TEXTCOLOR=$2
 fi
+
+BARCOLOR=${BARCOLOR:-"blue"}
 
 projects=`psql -t teammetrics -c "SELECT project FROM commitstat WHERE vcs = 'git' AND project not in $ignoreprojects GROUP BY project ;"`
 for proj in $projects ; do
@@ -27,7 +30,7 @@ textcolor="$TEXTCOLOR"
 if ( "$OUTPUTFORMAT" == "pdf" ) pdf("${NAME}.pdf", fg=textcolor, width=9, height=7) else png("${NAME}.png", width = 800, height = 600)
 
 par(col.axis=textcolor,col.main=textcolor)
-plotcolors <- c("blue")
+plotcolors <- c("${BARCOLOR}")
 barplot(dmstats\$packages, names.arg=dmstats\$maintainers, beside=TRUE,col=c("blue"),
         main = "Number of maintainers working on a package in $proj team")
 
