@@ -8,14 +8,14 @@ if [ "$1" = "pdf" ] ; then
     OUTPUTFORMAT=pdf
     TEXTCOLOR=${TEXTCOLOR:-"white"}
     BARCOLOR=${BARCOLOR:-"green"}
+else
+    BARCOLOR=${BARCOLOR:-"blue"}
 fi
 
 TEXTCOLOR=${TEXTCOLOR:-"black"}
 if [ "$2" != "" ] ; then
     TEXTCOLOR=$2
 fi
-
-BARCOLOR=${BARCOLOR:-"blue"}
 
 projects=`psql -t teammetrics -c "SELECT project FROM commitstat WHERE vcs = 'git' AND project not in $ignoreprojects GROUP BY project ;"`
 for proj in $projects ; do
