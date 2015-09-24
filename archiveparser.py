@@ -291,6 +291,7 @@ def main(conn, cur):
 
                     # Now populate the 'listarchives' table.
                     try:
+                        ## Debug: print lst_name, name, subject
                         cur.execute(
                                 """INSERT INTO listarchives
             (project, domain, name, email_addr, subject, reference_id, message_id, archive_date, today_date, is_spam)
