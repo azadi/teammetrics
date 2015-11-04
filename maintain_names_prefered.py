@@ -67,6 +67,7 @@ WHITELIST = (
              'Debian OpenCL Maintainers',
              'Debian PHP PEAR Maintainers',
              'Debian Printing Group',
+             'Debian Qt/KDE Maintainers',
              'Debian running development group',
              'Debian Science Team',
              'Debian systemd Maintainers',
@@ -102,6 +103,7 @@ WHITELIST = (
              'Jérôme Marant',
              'Joel Aelwyn',
              'John Francesco Ferlito',
+             'Jörgen Hägg',
              'Joseph Nahmias',
              'Juan Rafael Alvarez Correa',
              'Kan-Ru Chen',
@@ -148,6 +150,7 @@ WHITELIST = (
              'Tony Palma',
              'Dr. Torge Szczepanek',
              'Vanessa Gutiérrez',
+             'Wolfgang Fütterer',
              'W. Martin Borgert',
              'Xavier Lüthi',
             )
