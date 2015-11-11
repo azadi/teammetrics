@@ -170,3 +170,12 @@ GRANT ALL ON FUNCTION commitlines_names_of_project(text,integer,integer) TO till
 
 COMMIT;
 EOF
+
+sudo mkdir -p /var/log/teammetrics/
+sudo chmod g+w /var/log/teammetrics/
+sudo chgrp admin /var/log/teammetrics/
+
+sudo mkdir -p /var/cache/teammetrics/
+sudo chmod g+w /var/cache/teammetrics/
+sudo chgrp admin /var/cache/teammetrics/
+
