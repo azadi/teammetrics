@@ -1,4 +1,5 @@
 #!/bin/sh
 name=teammetrics
-pg_dump --no-owner -p 5452 -Fc -v  -f ${name}.dump $name
-tar caf ${name}_var.tgz /var/cache/$name /var/log/$name
+dumpdir=/tmp
+pg_dump --no-owner -p 5452 -Fc -v -f ${dumpdir}/${name}.dump $name
+tar caf ${dumpdir}/${name}_var.tgz --exclude commits.json /var/cache/$name /var/log/$name
