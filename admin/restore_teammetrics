@@ -1,0 +1,11 @@
+#!/bin/sh
+name=teammetrics
+dropdb ${name} || true
+createdb ${name}
+pg_restore -j 8 -v -d ${name} ${name}.dump
+tar xaf ${name}_var.tgz
+mkdir -p /var/cache/$name
+mkdir -p /var/log/$name
+mv ./var/cache/$name/* /var/cache/$name
+mv ./var/log/$name/* /var/log/$name
+rm -rf ./var

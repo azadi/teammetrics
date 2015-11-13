@@ -1,0 +1,4 @@
+#!/bin/sh
+name=teammetrics
+pg_dump --no-owner -p 5452 -Fc -v  -f ${name}.dump $name
+tar caf ${name}_var.tgz /var/cache/$name /var/log/$name
