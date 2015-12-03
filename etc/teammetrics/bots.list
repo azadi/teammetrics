@@ -44,6 +44,7 @@ AP
 cd-builder user
 D-I role
 jenkins%jenkins.debian.net
+reproducible-builds
 PurrrChase%
 GHC
 ShopZeDeal
