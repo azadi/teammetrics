@@ -87,6 +87,7 @@ Barry Warsaw                    :           warsaw-guest
 Barry deFreese                  :           bddebian-guest, bdefreese
 Bart Cornelis                   :           cobaco%
 Bastian Blank                   :           waldi
+Bastien Roucariès               :           bastien ROUCARIES, Bastien Roucaries, Bastien ROUCARIES, Bastien ROUCARIÈS
 Bdale Garbee                    :           bdale
 Ben Armstrong                   :           synrg
 Ben Collins                     :           bcollins
@@ -148,7 +149,7 @@ Christopher Schmidt             :           crschmidt-guest
 Christopher Walker              :           cjw1006-guest
 Clint Byrum                     :           spamaps-guest
 Cody Somerville                 :           cody-somerville-guest
-Colin Watson                    :           cjwatson
+Colin Watson                    :           cjwatson, cjwatson@debian.org
 Cosimo Alfarano                 :           kalfa
 Craig Small                     :           csmall
 Cécile FORELLA                  :           forella-guest
@@ -356,7 +357,7 @@ Jeremy Lainé                    :           sharky
 Jérémy Lal                      :           J%my Lal
 Jeremy Sanders                  :           jeremysanders-guest
 Jeroen van Meeuwen              :           Jeroen van Meeuwen%
-Jeroen van Wolffelaar           :           jeroen
+Jeroen van Wolffelaar           :           jeroen, jeroen@debian.org, jeroen@wolffelaar.nl
 Jerome Alet                     :           jalet-guest
 Jerome Marant                   :           jerome
 Jerry Haltom                    :           wasabi-guest
@@ -460,7 +461,7 @@ Manoj Srivastava                :           Manoj Srivastava <Manoj Srivastava, 
 Manu Mahajan                    :           zuch-guest
 Manuel Prinz                    :           manuel, hauro-guest
 Manuel Soukup                   :           manux-guest
-Marc 'HE' Brockschmidt          :           he-guest, he, Marc%Brockschmidt
+Marc 'HE' Brockschmidt          :           he-guest, he, Marc%Brockschmidt, he@debian.org, marc@marcbrockschmidt.de
 Marcio Roberto Teixeira         :           marciotex-guest
 Marco Amadori                   :           mammadori-guest
 Marco Antoniotti                :           marcoxa
@@ -621,7 +622,7 @@ Richard Darst                   :           mrbeige-guest, rkd-guest
 Richard Holland                 :           holland-guest
 Richard Jones                   :           rwmj-guest
 Richard Nelson                  :           rjent-guest
-Roberto Sanchez                 :           roberto
+Roberto C. Sánchez              :           Roberto Sanchez, roberto, Roberto C. Sanchez
 Robin Munn                      :           rmunn-guest
 Rodolphe Quiédeville            :           rodo-guest
 Rodrigo Gallardo                :           rodrigogc-guest
