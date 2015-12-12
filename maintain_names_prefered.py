@@ -115,6 +115,7 @@ WHITELIST = (
              'Maia Kozheva',
              'Marcio de Souza Oliveira',
              'Martin Sjögren',
+             'Matthijs Möhlmann',
              'Michael Fladischer',
              'Michel Dänzer',
              'Mikael Sennerholm',
