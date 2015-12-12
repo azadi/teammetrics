@@ -13,7 +13,7 @@ ssh -t udd.debian.org sudo -u udd pg_dump --no-owner -p 5452 -Fc -v  -f /run/shm
 
 pg_restore -j 8 -v -d udd udd-$ts.dump || true # some warnings should not stop the script
 
-psql udd -c 'CREATE EXTENSION tablefunc; GRANT EXECUTE ON FUNCTION crosstab(text,text) TO guest;'
+psql udd -c 'CREATE EXTENSION tablefunc; GRANT EXECUTE ON FUNCTION crosstab(text,text) TO guest;' || true
 ./maintain_names_prefered.py
 psql udd < create_names_prefered.sql
 psql udd < closed_bugs.sql
