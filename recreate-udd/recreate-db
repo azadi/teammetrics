@@ -10,8 +10,10 @@ echo 'CREATE EXTENSION debversion' | psql udd
 ts=$(date --iso-8601=s | sed -e 's/://g' | cut -d '+' -f 1)
 
 ssh -t udd.debian.org sudo -u udd pg_dump --no-owner -p 5452 -Fc -v  -f /run/shm/udd-$ts.dump udd && \
-   rsync -avP udd.debian.org:/run/shm/udd-$ts.dump . && \
-   ssh -t udd.debian.org sudo -u udd rm /run/shm/udd-$ts.dump
+   rsync -avP udd.debian.org:/run/shm/udd-$ts.dump .## && \
+   ## our download is slow enough so most probably the file is removed from 
+   ## /run/shm before this statement is executed - so no need to ask for password again
+   ##ssh -t udd.debian.org sudo -u udd rm /run/shm/udd-$ts.dump
 
 pg_restore -j 8 -v -d udd udd-$ts.dump 2>&1 | tee > restore-udd.log || true # some warnings should not stop the script
 
