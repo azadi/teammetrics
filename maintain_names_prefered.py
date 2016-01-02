@@ -72,6 +72,7 @@ WHITELIST = (
              'Debian Science Team',
              'Debian systemd Maintainers',
              'Debian TeX Maintainers',
+             'Debian TTS Team',
              'Denis Rojo',
              'Dimitri John Ledkov',
              'Erdal Ronahî',
