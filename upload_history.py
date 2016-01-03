@@ -8,34 +8,34 @@ PLOTUPLOADERS=10
 MAXUPLOADERS=1000
 
 teams = { 
-          'debian-astro':      'debian-astro-maintainers@lists.alioth.debian.org'  ,
-          'debian-gis':        'pkg-grass-devel@lists.alioth.debian.org'           ,
-          'debian-live':       'debian-live@lists.debian.org'                      , # that's no real team but one very active person
-          'debian-med' :       'debian-med-packaging@lists.alioth.debian.org'      ,
-          'debian-php':        'pkg-php-maint@lists.alioth.debian.org'             ,
-          'debian-qa':         'debian-qa@lists.debian.org'                        ,
-          'debian-science':    'debian-science-maintainers@lists.alioth.debian.org',
-          'debian-tex':        'debian-tex-maint@lists.debian.org'                 ,
-          'debian-xfce':       'pkg-xfce-devel@lists.alioth.debian.org'            ,
-          'debichem':          'debichem-devel@lists.alioth.debian.org'            ,
-          'ocaml-maintainers': 'debian-ocaml-maint@lists.debian.org'               ,
-          'pkg-common-lisp':   'pkg-common-lisp-devel@lists.alioth.debian.org'     ,
-          'pkg-exppsy':        'team@neuro.debian.net'                             ,
-          'pkg-games':         'pkg-games-devel@lists.alioth.debian.org'           ,
-          'pkg-hamradio':      'debian-hams@lists.debian.org'                      ,
-          'pkg-haskell':       'pkg-haskell-maintainers@lists.alioth.debian.org'   ,
-          'pkg-java':          'pkg-java-maintainers@lists.alioth.debian.org'      ,
-          'pkg-libvirt':       'pkg-libvirt-maintainers@lists.alioth.debian.org'   ,
-          'pkg-multimedia':    'pkg-multimedia-maintainers@lists.alioth.debian.org',
-          'pkg-openstack':     'openstack-devel@lists.alioth.debian.org'           ,
-          'pkg-osm':           'pkg-osm-maint@lists.alioth.debian.org'             ,
-          'pkg-perl':          'pkg-perl-maintainers@lists.alioth.debian.org'      ,
-          'pkg-phototools':    'pkg-phototools-devel@lists.alioth.debian.org'      ,
-          'pkg-ruby':          'pkg-ruby-extras-maintainers@lists.alioth.debian.org',
-          'pkg-scicomp':       'pkg-scicomp-devel@lists.alioth.debian.org'         ,
-          'python-maint':      'pkg-python-debian-maint@lists.alioth.debian.org'   , # that's also no real team
-          'python-apps':       'python-apps-team@lists.alioth.debian.org'          ,
-          'python-modules':    'python-modules-team@lists.alioth.debian.org'       ,
+          'debian-astro':      '{"debian-astro-maintainers@lists.alioth.debian.org"}'  ,
+          'debian-gis':        '{"pkg-osm-maint@lists.alioth.debian.org","pkg-grass-devel@lists.alioth.debian.org"}' ,
+          'debian-live':       '{"debian-live@lists.debian.org"}'                      , # that's no real team but one very active person
+          'debian-med' :       '{"debian-med-packaging@lists.alioth.debian.org"}'      ,
+          'debian-php':        '{"pkg-php-maint@lists.alioth.debian.org"}'             ,
+          'debian-qa':         '{"debian-qa@lists.debian.org"}'                        ,
+          'debian-science':    '{"pkg-scicomp-devel@lists.alioth.debian.org","debian-science-maintainers@lists.alioth.debian.org"}',
+          'debian-tex':        '{"debian-tex-maint@lists.debian.org"}'                 ,
+          'debian-xfce':       '{"pkg-xfce-devel@lists.alioth.debian.org"}'            ,
+          'debichem':          '{"debichem-devel@lists.alioth.debian.org"}'            ,
+          'ocaml-maintainers': '{"debian-ocaml-maint@lists.debian.org"}'               ,
+          'pkg-common-lisp':   '{"pkg-common-lisp-devel@lists.alioth.debian.org"}'     ,
+          'pkg-exppsy':        '{"team@neuro.debian.net"}'                             ,
+          'pkg-games':         '{"pkg-games-devel@lists.alioth.debian.org"}'           ,
+          'pkg-hamradio':      '{"debian-hams@lists.debian.org"}'                      ,
+          'pkg-haskell':       '{"pkg-haskell-maintainers@lists.alioth.debian.org"}'   ,
+          'pkg-java':          '{"pkg-java-maintainers@lists.alioth.debian.org"}'      ,
+          'pkg-libvirt':       '{"pkg-libvirt-maintainers@lists.alioth.debian.org"}'   ,
+          'pkg-multimedia':    '{"pkg-multimedia-maintainers@lists.alioth.debian.org"}',
+          'pkg-openstack':     '{"openstack-devel@lists.alioth.debian.org"}'           ,
+#          'pkg-osm':           'pkg-osm-maint@lists.alioth.debian.org'             ,
+          'pkg-perl':          '{"pkg-perl-maintainers@lists.alioth.debian.org"}'      ,
+          'pkg-phototools':    '{"pkg-phototools-devel@lists.alioth.debian.org"}'      ,
+          'pkg-ruby':          '{"pkg-ruby-extras-maintainers@lists.alioth.debian.org"}',
+#          'pkg-scicomp':       'pkg-scicomp-devel@lists.alioth.debian.org'         ,
+          'python-maint':      '{"pkg-python-debian-maint@lists.alioth.debian.org"}'   , # that's also no real team
+          'python-apps':       '{"python-apps-team@lists.alioth.debian.org"}'          ,
+          'python-modules':    '{"python-modules-team@lists.alioth.debian.org"}'       ,
         }
 
 #teams = {
@@ -113,7 +113,7 @@ for team in teams.keys():
     # print team
     datafile=outputname+'_'+team+'.txt'
     out = open(datafile, 'w')
-    query = "SELECT replace(uploader,' ','_') AS uploader FROM %s_names_of_pkggroup('%s', %i) AS (uploader text);" % (sql_procedure_prefix, teams[team], MAXUPLOADERS)
+    query = "SELECT replace(uploader,' ','_') AS uploader FROM %s_names_of_pkggroups('%s', %i) AS (uploader text);" % (sql_procedure_prefix, teams[team], MAXUPLOADERS)
     # print query
     curs.execute(query)
 
@@ -134,8 +134,8 @@ for team in teams.keys():
 	FROM 
 	crosstab(
 	     'SELECT year AS row_name, name AS bucket, count AS value
-                     FROM %s_per_year_of_pkggroup(''%s'', %i) AS (name text, year int, count int)',
-             'SELECT * FROM %s_names_of_pkggroup(''%s'', %i) AS (category text)'
+                     FROM %s_per_year_of_pkggroups(''%s'', %i) AS (name text, year int, count int)',
+             'SELECT * FROM %s_names_of_pkggroups(''%s'', %i) AS (category text)'
         ) As (%s)
 """ % (sql_procedure_prefix, teams[team], nuploaders, sql_procedure_prefix, teams[team], MAXUPLOADERS, typestring)
 
@@ -162,8 +162,8 @@ for team in teams.keys():
 	FROM 
 	crosstab(
 	     'SELECT year AS row_name, name AS bucket, count AS value
-                     FROM %s_per_year_of_pkggroup(''%s'', %i) AS (name text, year int, count int)',
-             'SELECT * FROM %s_names_of_pkggroup(''%s'', %i) AS (category text)'
+                     FROM %s_per_year_of_pkggroups(''%s'', %i) AS (name text, year int, count int)',
+             'SELECT * FROM %s_names_of_pkggroups(''%s'', %i) AS (category text)'
         ) As (%s)
 """ % (sql_procedure_prefix, teams[team], nuploaders, sql_procedure_prefix, teams[team], nuploaders, typestring)
 	    # print query
