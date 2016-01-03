@@ -25,6 +25,7 @@ CREATE OR REPLACE FUNCTION active_uploader_ids_of_pkggroups(text[],int) RETURNS 
 $$ LANGUAGE SQL;
 
 /*
+SELECT * FROM active_uploader_ids_of_pkggroups('{"debian-med-packaging@lists.alioth.debian.org"}',50) AS (id int, count int);
 SELECT * FROM active_uploader_ids_of_pkggroups('{"pkg-osm-maint@lists.alioth.debian.org","pkg-grass-devel@lists.alioth.debian.org"}',50) AS (id int, count int);
 SELECT * FROM active_uploader_ids_of_pkggroups('{"pkg-scicomp-devel@lists.alioth.debian.org","debian-science-maintainers@lists.alioth.debian.org"}',50) AS (id int, count int);
 */
@@ -98,6 +99,7 @@ CREATE OR REPLACE FUNCTION active_uploader_per_year_of_pkggroups(text[],int) RET
 $$ LANGUAGE SQL;
 
 /*
+SELECT * FROM active_uploader_per_year_of_pkggroups('{"debian-med-packaging@lists.alioth.debian.org"}',50) AS (name text, year int, count int);
 SELECT * FROM active_uploader_per_year_of_pkggroups('{"pkg-osm-maint@lists.alioth.debian.org","pkg-grass-devel@lists.alioth.debian.org"}',50) AS (name text, year int, count int);
 SELECT * FROM active_uploader_per_year_of_pkggroups('{"pkg-scicomp-devel@lists.alioth.debian.org","debian-science-maintainers@lists.alioth.debian.org"}',50) AS (name text, year int, count int);
 */
@@ -152,6 +154,7 @@ CREATE OR REPLACE FUNCTION active_uploader_names_of_pkggroups(text[], int) RETUR
 $$ LANGUAGE SQL;
 
 /*
+SELECT * FROM active_uploader_names_of_pkggroups('{"debian-med-packaging@lists.alioth.debian.org"}',50) AS (name text);
 SELECT * FROM active_uploader_names_of_pkggroups('{"pkg-osm-maint@lists.alioth.debian.org","pkg-grass-devel@lists.alioth.debian.org"}',50) AS (name text);
 SELECT * FROM active_uploader_names_of_pkggroups('{"pkg-scicomp-devel@lists.alioth.debian.org","debian-science-maintainers@lists.alioth.debian.org"}',50) AS (name text);
 */
