@@ -38,6 +38,9 @@ svnpackage_re5 = re.compile('^\s*[DAM]\s+.*/packages/([^/]+/[bt][ar][agu][ns][^/
 svnpackage_re6 = re.compile('^\s*[DAM]\s+.*/tags/([^/^ ]+)/.*')
 svnpackage_re7 = re.compile('^\s*[DAM]\s+/([^/^ ]+)/tags/.*/([^/^ ]+)/trunk.*')
 svnpackage_re8 = re.compile('^\s*[DAM]\s+/branches.*/([^/^ ]+).*/trunk/([^/^ ]+)[:/].*')
+svnpackage_re9 = re.compile('^\s*[DAM]\s+/packages/tags/.*/packages/trunk/([^/^ ]+)[:/].*')
+svnpackage_re10 = re.compile('^\s*[DAM]\s+/packages/[bt][ar][agu][ns][^/]*/([^/^ ]+).*/packages/[bt][ar][agu][ns][^/]*/([^/^ ]+).*')
+svnpackage_re11 = re.compile('^\s*[DAM].*/packages/trunk/([^/^ ^:]+):*.*')
 svnpackage_re_trybranch  = re.compile('^branches/([^/]+)/(wheezy|squeeze|\d+\.|convert|feature).*')
 svnpackage_re_lastchance  = re.compile('^[^/]+/([^/]+)$')
 svnpackage_re_lastchance2 = re.compile('^([^/^ ]+)/.+/([^/^ ]+)$')
@@ -249,6 +252,9 @@ def get_svn_commits(project):
             p = svnpackage_re0.match(com)
             if not p:
                 p = svnpackage_re1.match(com)
+                if p and p.group(1) == 'packages':
+                    # wrong match from team with /packages/(trunk|tags|branches) layout
+                    p = None
                 if not p:
                     p = svnpackage_re2.match(com)
                     if not p:
@@ -261,20 +267,36 @@ def get_svn_commits(project):
                                     p = svnpackage_re6.match(com)
                                     if not p:
                                         p = svnpackage_re7.match(com)
+                                        if p and p.group(1) == 'packages':
+                                            # wrong match from team with /packages/(trunk|tags|branches) layout
+                                            p = None
                                         if not p:
                                             p = svnpackage_re8.match(com)
                                             if not p:
-                                                continue
-                                            if p.group(1) != p.group(2):
-                                                logging.warning("branches and trunk found but different package strings %s != %s (com='%s', id='%s')" % (p.group(1), p.group(2), com, commit['commit_id']))
-                                                continue
+                                                p = svnpackage_re9.match(com)
+                                                if not p:
+                                                    p = svnpackage_re10.match(com)
+                                                    if not p:
+                                                        p = svnpackage_re11.match(com)
+                                                        if not p:
+                                                            continue
+                                            else:
+                                                # Regexp re8 has to matches that should be equal
+                                                if p.group(1) != p.group(2):
+                                                    logging.warning("branches and trunk found but different package strings %s != %s (com='%s', id='%s')" % (p.group(1), p.group(2), com, commit['commit_id']))
+                                                    continue
                                         else:
+                                            # Regexp re7 has to matches that should be equal
                                             if p.group(1) != p.group(2):
                                                 logging.warning("tag and trunk found but different package strings %s != %s (com='%s', id='%s')" % (p.group(1), p.group(2), com, commit['commit_id']))
                                                 continue
 
             px=p.group(1)
-            if px.find('/') == -1:
+            if px.startswith('packages/trunk/'):
+                pkg=re.sub('^packages/trunk/', '', px)
+            elif px.startswith('packages/tags/'):
+                pkg=re.sub('^packages/tags/', '', px)
+            elif px.find('/') == -1:
                 pkg=px
             elif px.endswith('/trunk'):
                 pkg=re.sub('.*/([^/]+)/trunk', '\\1', px)
