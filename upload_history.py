@@ -33,6 +33,7 @@ teams = {
           'pkg-phototools':    '{"pkg-phototools-devel@lists.alioth.debian.org"}'      ,
           'pkg-ruby':          '{"pkg-ruby-extras-maintainers@lists.alioth.debian.org"}',
 #          'pkg-scicomp':       'pkg-scicomp-devel@lists.alioth.debian.org'         ,
+          'pkg-wine':          '{"pkg-wine-party@lists.alioth.debian.org"}',
           'python-maint':      '{"pkg-python-debian-maint@lists.alioth.debian.org"}'   , # that's also no real team
           'python-apps':       '{"python-apps-team@lists.alioth.debian.org"}'          ,
           'python-modules':    '{"python-modules-team@lists.alioth.debian.org"}'       ,
