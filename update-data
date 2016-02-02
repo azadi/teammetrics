@@ -3,10 +3,7 @@
 time archiveparser.py
 
 # repositories
-#     to activate your ssh-key do:
-#   exec ssh-agent /bin/bash
-#   ssh-add ~/.ssh/<your-sec-key>
-time commitstat.py -u sukhbir-guest
+time commitstat.py
 
 # mailing list archives (Alioth lists)
 time liststat.py
