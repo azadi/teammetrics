@@ -129,6 +129,7 @@ WHITELIST = (
              'Paolo Didonè',
              'Philip Blundell',
              'Picca Frédéric-Emmanuel',
+             'Piotr Ożarowski',
              'Praveen Arimbrathodiyil',
              'Øystein Gisnås',
              'Radovan Garabík',
