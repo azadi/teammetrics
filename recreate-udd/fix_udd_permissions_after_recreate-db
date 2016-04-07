@@ -1,0 +1,20 @@
+#!/bin/sh
+# For some strange reason after upgrade to PostgreSQL versionm 9.5
+# permission for some tables need to be set explicitly for user guest
+
+psql udd <<EOT
+GRANT SELECT ON releases TO guest ;
+GRANT SELECT ON ubuntu_packages TO guest ;
+GRANT SELECT ON upstream TO guest ;
+GRANT SELECT ON packages TO guest ;
+GRANT SELECT ON blends_dependencies TO guest ;
+GRANT SELECT ON new_packages TO guest ;
+GRANT SELECT ON blends_prospectivepackages TO guest ;
+GRANT SELECT ON sources TO guest ;
+GRANT SELECT ON new_sources TO guest ;
+GRANT SELECT ON ubuntu_sources TO guest ;
+GRANT SELECT ON vcs TO guest ;
+GRANT SELECT ON all_packages TO guest ;
+GRANT SELECT ON all_sources TO guest ;
+EOT
+
