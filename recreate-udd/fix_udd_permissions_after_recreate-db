@@ -19,5 +19,15 @@ GRANT SELECT ON ubuntu_sources TO guest ;
 GRANT SELECT ON vcs TO guest ;
 GRANT SELECT ON all_packages TO guest ;
 GRANT SELECT ON all_sources TO guest ;
+GRANT SELECT ON descriptions TO guest ;
+GRANT SELECT ON popcon TO guest ;
+GRANT SELECT ON bibref TO guest ;
+GRANT SELECT ON blends_remarks TO guest ;
+GRANT SELECT ON upstream_metadata TO guest ;
+GRANT SELECT ON edam TO guest ;
+GRANT SELECT ON upload_history TO guest ;
+GRANT SELECT ON packages_summary TO guest ;
+GRANT SELECT ON screenshots TO guest ;
+GRANT SELECT ON debtags TO guest ;
 EOT
 

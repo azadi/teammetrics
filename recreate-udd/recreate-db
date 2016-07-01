@@ -6,21 +6,13 @@ if [ -d /srv/udd/init ] ; then
     cd /srv/udd/init
 fi
 
-ts=$(date --iso-8601=s | sed -e 's/://g' | cut -d '+' -f 1)
+wget --continue https://udd.debian.org/dumps/udd.dump
 
-ssh -t udd.debian.org sudo -u udd pg_dump --no-owner -p 5452 -Fc -v  -f /run/shm/udd-$ts.dump udd > dump-udd.log && \
-   ssh -t md5sum /run/shm/udd-$ts.dump > udd-$ts.dump.udd.md5 && \
-   rsync -avP udd.debian.org:/run/shm/udd-$ts.dump .
-   ## our download is slow enough so most probably the file is removed from 
-   ## /run/shm before this statement is executed - so no need to ask for password again
-   ##ssh -t udd.debian.org sudo -u udd rm /run/shm/udd-$ts.dump
-
-md5sum /run/shm/udd-$ts.dump > udd-$ts.dump.rsync.md5
 sudo /etc/init.d/postgresql restart
 dropdb udd || true
 createdb -T template0 -E SQL_ASCII udd
 echo 'CREATE EXTENSION debversion' | psql udd
-pg_restore -j 8 -v -d udd udd-$ts.dump 2>&1 | tee > restore-udd.log || true # some warnings should not stop the script
+pg_restore -j 8 -v -d udd udd.dump 2>&1 | tee > restore-udd.log || true # some warnings should not stop the script
 
 psql udd -c 'CREATE EXTENSION tablefunc; GRANT EXECUTE ON FUNCTION crosstab(text,text) TO guest;' || true
 ./maintain_names_prefered.py
