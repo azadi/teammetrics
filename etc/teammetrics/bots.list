@@ -1,4 +1,6 @@
 Archive Administrator
+Automatic packaging
+Automatic PS uploader
 Cron Daemon
 BugScan reporter
 bts-link-upstream
@@ -26,6 +28,8 @@ Debian Project Secretary
 bugzilla%
 NM Front Desk
 noreply@alioth.debian.org
+unknown
+SVN-Git Migration
 Mini-Dinstall
 samba-bugs at samba.org
 Reproducible builds folks
