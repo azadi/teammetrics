@@ -40,6 +40,7 @@ WHITELIST = (
              'Alexandre Mestiashvili',
              'Ana Beatriz Guerrero López',
              'Andrew O. Shadoura',
+             'Android Tools Maintainers',
              'Bastien Roucariès',
              'Bert Agaz',
              'Björn Andersson',
