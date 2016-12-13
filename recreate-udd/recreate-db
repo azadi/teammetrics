@@ -6,6 +6,9 @@ if [ -d /srv/udd/init ] ; then
     cd /srv/udd/init
 fi
 
+if [ -e udd.dump ] ; then
+  mv udd.dump udd.dump~
+fi
 wget --continue https://udd.debian.org/dumps/udd.dump
 
 sudo /etc/init.d/postgresql restart
