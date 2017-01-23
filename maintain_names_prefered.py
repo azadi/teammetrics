@@ -95,6 +95,7 @@ WHITELIST = (
              'GOsa packages maintainers group',
              'Guido Günther',
              'Günter Milde',
+             "Hanno 'Rince' Wagner",
              'Hubert Chan',
              'intrigeri',
              'IOhannes m zmölnig',
