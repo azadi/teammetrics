@@ -17,6 +17,9 @@ createdb -T template0 -E SQL_ASCII udd
 echo 'CREATE EXTENSION debversion' | psql udd
 pg_restore -j 8 -v -d udd udd.dump 2>&1 | tee > restore-udd.log || true # some warnings should not stop the script
 
+# Hmmm, sometimes a
+#    psql udd -c 'ALTER TABLE carnivore_names ADD PRIMARY KEY (id, name) ;'
+# is needed
 psql udd -c 'CREATE EXTENSION tablefunc; GRANT EXECUTE ON FUNCTION crosstab(text,text) TO guest;' || true
 ./maintain_names_prefered.py
 psql udd < create_names_prefered.sql
