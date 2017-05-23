@@ -129,7 +129,7 @@ WHITELIST = (
              'Juan Rafael Alvarez Correa',
              'Kan-Ru Chen',
              'Kentaro Hayashi',
-             'Kristoffer H. Rose',
+             'Kristoffer H Rose',
              'Krzysztof Krzyżaniak',
              'Live Systems Maintainers',
              'Loïc Minier',
