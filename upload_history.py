@@ -30,7 +30,7 @@ teams = {
           'pkg-openstack':     '{"openstack-devel@lists.alioth.debian.org"}'           ,
 #          'pkg-osm':           'pkg-osm-maint@lists.alioth.debian.org'             ,
           'pkg-perl':          '{"pkg-perl-maintainers@lists.alioth.debian.org"}'      ,
-          'pkg-postgresql':    '{"pkg-postgresql@lists.alioth.debian.org"}'            ,
+          'pkg-postgresql':    '{"pkg-postgresql-public@lists.alioth.debian.org"}'            ,
           'pkg-phototools':    '{"pkg-phototools-devel@lists.alioth.debian.org"}'      ,
           'pkg-ruby':          '{"pkg-ruby-extras-maintainers@lists.alioth.debian.org"}',
 #          'pkg-scicomp':       'pkg-scicomp-devel@lists.alioth.debian.org'         ,
